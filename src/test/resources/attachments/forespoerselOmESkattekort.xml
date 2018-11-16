@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<forespoerselOmSkattekortTilArbeidsgiver xmlns="urn:ske:fastsetting:formueinntekt:forskudd:forespoerselomskattekorttilarbeidsgiver:v1">
+  <arbeidsgiver>
+    <arbeidsgiveridentifikator>
+      <organisasjonsnummer>910962728</organisasjonsnummer>
+    </arbeidsgiveridentifikator>
+    <arbeidstakeridentifikator>04025002240</arbeidstakeridentifikator>
+  </arbeidsgiver>
+</forespoerselOmSkattekortTilArbeidsgiver>
