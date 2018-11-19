@@ -197,4 +197,24 @@
         </plugins>
     </build>
 
+    <scm>
+        <url>http://stash.devillo.no/scm/oko/oko-altinn-consumer.git</url>
+        <connection>scm:git:ssh://git@stash.devillo.no:7999/oko/oko-altinn-consumer.git</connection>
+        <developerConnection>scm:git:ssh://git@stash.devillo.no:7999/oko/oko-altinn-consumer.git</developerConnection>
+        <tag>oko-altinn-consumer-1.0.0</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>m2internal</id>
+            <name>NAV Maven2 Internal Repository</name>
+            <url>dav:http://maven.adeo.no/nexus/content/repositories/m2internal</url>
+        </repository>
+        <snapshotRepository>
+            <id>m2snapshot</id>
+            <name>NAV Maven2 Snapshot Repository</name>
+            <url>dav:http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
