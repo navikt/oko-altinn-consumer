@@ -27,6 +27,14 @@ import static org.junit.Assert.fail;
 @TestPropertySource({"classpath:properties/altinntjenester-uri.properties", "classpath:properties/navtestklient-credentials.properties", "classpath:properties/navtestklient-certificate.properties"})
 public class FormSubmitITest {
 
+    private static final String SERVICE_CODE = "3103";
+    private static final String SERVICE_EDITION_CODE = "170424";
+    private static final String DATA_FORMAT_ID = "1548";
+    private static final String DATA_FORMAT_VERSION = "11936";
+    private static final String LANGUAGE_ID = "1044";
+    private static final String DATA_FORMAT_PROVIDER = "SERES";
+
+
     @Inject
     private IIntermediaryInboundExternalEC formSubmitPortType;
 
@@ -36,23 +44,17 @@ public class FormSubmitITest {
 
     @Before
     public void setup() {
-        Map<AltinnFormSubmitConsumerConfig.PropertyMapKey, String> map = new EnumMap<>(AltinnFormSubmitConsumerConfig.PropertyMapKey.class);
-        map.put(AltinnFormSubmitConsumerConfig.PropertyMapKey.SERVICE_CODE, "3103");
-        map.put(AltinnFormSubmitConsumerConfig.PropertyMapKey.SERVICE_EDITION_CODE, "170424");
-        map.put(AltinnFormSubmitConsumerConfig.PropertyMapKey.DATA_FORMAT_ID, "1548");
-        map.put(AltinnFormSubmitConsumerConfig.PropertyMapKey.DATA_FORMAT_VERSION, "11936");
-        map.put(AltinnFormSubmitConsumerConfig.PropertyMapKey.LANGUAGE_ID, "1044");
-        map.put(AltinnFormSubmitConsumerConfig.PropertyMapKey.DATA_FORMAT_PROVIDER, "SERES");
-
+        FormSubmitServiceProperties serviceProperties = new FormSubmitServiceProperties(SERVICE_CODE,
+                SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION);
         AttachmentService attachmentService = new AttachmentService();
-        FormTaskService formTaskService = new FormTaskService(map);
+        FormTaskService formTaskService = new FormTaskService(serviceProperties);
         formTaskShipmentService = new FormTaskShipmentService(attachmentService, formTaskService);
 
         service = new DefaultAltinnFormSubmitConsumerService(formSubmitPortType, FormSubmitConsumerTestConfig.credentials, formTaskShipmentService);
     }
 
     @Test
-    public void formSubmitServiceTest() throws Exception {
+    public void formSubmitServiceTest() {
         try {
             service.test();
         } catch (Exception e) {

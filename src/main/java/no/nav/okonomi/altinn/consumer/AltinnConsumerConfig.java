@@ -12,7 +12,7 @@ import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBusFactory;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.WSConstants;
@@ -34,36 +34,42 @@ import java.util.Properties;
 @Import({AltinnCorrespondenceConsumerConfig.class, AltinnFormSubmitConsumerConfig.class, AltinnReceiptConsumerConfig.class})
 public class AltinnConsumerConfig {
 
-    private static final String SYSTEM_PROPERTY_APPCERT_ALIAS = "no.nav.modig.security.appcert.keystorealias";
-
-    private static final String SYSTEM_PROPERTY_APPCERT_SECRET = "no.nav.modig.security.appcert.password";
-
-    private static final String SYSTEM_PROPERTY_APPCERT_FILE = "no.nav.modig.security.appcert.keystore";
-
-    @Value("${nav_altinn_consumer_virksomhet_password}")
+    @Value("${altinn-consumer.virksomhet.password}")
     private String virksomhetUserName;
 
-    @Value("${nav_altinn_consumer_virksomhet_username}")
+    @Value("${altinn-consumer.virksomhet.username}")
     private String virksomhetPassord;
+
+    @Value("${altinn-consumer.security.appcert.keystorealias}")
+    private String appcertKeystorealias;
+
+    @Value("${altinn-consumer.security.appcert.password}")
+    private String appcertSecret;
+
+    @Value("${altinn-consumer.security.appcert.keystore:app-key}")
+    private String appcertKeystore;
 
     private final SpringBusFactory busFactory = new SpringBusFactory();
 
     protected void setRequestContext(Object port, SecurityCredentials credentials) {
-        Client client = ClientProxy.getClient(port);
-        client.getRequestContext().put("security.must-understand", Boolean.TRUE);
-        client.getRequestContext().put("org.apache.cxf.message.Message.MAINTAIN_SESSION", Boolean.TRUE);
-        client.getRequestContext().put("javax.xml.ws.session.maintain", Boolean.TRUE);
-        client.getRequestContext().put("security.cache.issued.token.in.endpoint", Boolean.TRUE); // default: true
-        client.getRequestContext().put("security.issue.after.failed.renew", Boolean.TRUE); // This must be set to true (default: true)
-        client.getRequestContext().put("security.signature.properties", credentials.getKeyStoreProperties());
+        try (Client client = ClientProxy.getClient(port)) {
+            client.getRequestContext().put("security.must-understand", Boolean.TRUE);
+            client.getRequestContext().put("org.apache.cxf.message.Message.MAINTAIN_SESSION", Boolean.TRUE);
+            client.getRequestContext().put("javax.xml.ws.session.maintain", Boolean.TRUE);
+            client.getRequestContext().put("security.cache.issued.token.in.endpoint", Boolean.TRUE); // default: true
+            client.getRequestContext().put("security.issue.after.failed.renew", Boolean.TRUE); // This must be set to true (default: true)
+            client.getRequestContext().put("security.signature.properties", credentials.getKeyStoreProperties());
+        } catch (Exception e) {
+            throw new AltinnConsumerException("Altinn-consumer feilet ved opprettelse av proxy-client", e);
+        }
     }
 
     @Bean
     public SecurityCredentials securityCredentials() {
         Properties keyStoreProperties = new Properties();
-        keyStoreProperties.setProperty("keystore", System.getProperty(SYSTEM_PROPERTY_APPCERT_FILE));
-        keyStoreProperties.setProperty("keystorepassword", System.getProperty(SYSTEM_PROPERTY_APPCERT_SECRET));
-        keyStoreProperties.setProperty("keystorealias", System.getProperty(SYSTEM_PROPERTY_APPCERT_ALIAS, "app-key"));
+        keyStoreProperties.setProperty("keystore", appcertKeystore);
+        keyStoreProperties.setProperty("keystorepassword", appcertSecret);
+        keyStoreProperties.setProperty("keystorealias", appcertKeystore);
         return new SecurityCredentials(virksomhetUserName, virksomhetPassord, keyStoreProperties);
     }
 

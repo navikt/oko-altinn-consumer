@@ -25,7 +25,6 @@ public class FormTaskShipmentServiceTest {
     private static final String INNTEKTSAAR = "2017";
     private static final byte[] VEDLEGG = {1, 2, 3};
     private static final String SIDEN_DATO = "sidenDato";
-    public static final String PREFIX = "OSESKATT_";
 
     @InjectMocks
     private FormTaskShipmentService formTaskShipmentService;
@@ -37,7 +36,7 @@ public class FormTaskShipmentServiceTest {
     private AttachmentService attachmentService;
 
     @Test
-    public void createFormTaskShipment() throws Exception {
+    public void createFormTaskShipment() {
         FormTask formTask = new FormTask();
         ArrayOfAttachment arrayOfAttachment = new ArrayOfAttachment();
 
@@ -49,13 +48,13 @@ public class FormTaskShipmentServiceTest {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(message);
 
         assertThat(formTaskShipment.getReportee(), is(ORGNUMMER));
-        assertThat(formTaskShipment.getExternalShipmentReference(), is(PREFIX+ORDER_ID));
+        assertThat(formTaskShipment.getExternalShipmentReference(), is(ORDER_ID));
         assertThat(formTaskShipment.getFormTasks(), is(formTask));
         assertThat(formTaskShipment.getAttachments(), is(arrayOfAttachment));
     }
 
     @Test
-    public void createFormTaskShipmentWithoutAttachments() throws Exception {
+    public void createFormTaskShipmentWithoutAttachments() {
         FormTask formTask = new FormTask();
 
         RF1211MessageVO message = stubMessage();
@@ -65,7 +64,7 @@ public class FormTaskShipmentServiceTest {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(message);
 
         assertThat(formTaskShipment.getReportee(), is(ORGNUMMER));
-        assertThat(formTaskShipment.getExternalShipmentReference(), is(PREFIX+ORDER_ID));
+        assertThat(formTaskShipment.getExternalShipmentReference(), is(ORDER_ID));
         assertThat(formTaskShipment.getFormTasks(), is(formTask));
         assertNull(formTaskShipment.getAttachments());
     }

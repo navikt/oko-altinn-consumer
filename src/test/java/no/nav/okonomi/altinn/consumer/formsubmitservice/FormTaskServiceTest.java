@@ -1,18 +1,14 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
 import no.altinn.intermediaryinboundexternalec.FormTask;
-import no.nav.okonomi.altinn.consumer.formsubmitservice.AltinnFormSubmitConsumerConfig.PropertyMapKey;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FormTaskServiceTest {
@@ -29,23 +25,19 @@ public class FormTaskServiceTest {
     private static final String DATA_FORMAT_ID = "dataFormatId";
     private static final String DATA_FORMAT_VERSION = "2";
     private static final String LANGUAGE_ID = "3";
+    private static final String DATA_FORMAT_PROVIDER = "31";
 
     @InjectMocks
     private FormTaskService formTaskService;
 
-    @Mock
-    private Map<PropertyMapKey, String> map;
+    @Before
+    public void setUp() {
+        formTaskService = new FormTaskService(new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION));
+    }
 
     @Test
-    public void createFormTask() throws Exception {
-        when(map.get(PropertyMapKey.SERVICE_CODE)).thenReturn(SERVICE_CODE);
-        when(map.get(PropertyMapKey.SERVICE_EDITION_CODE)).thenReturn(SERVICE_EDITION_CODE);
-        when(map.get(PropertyMapKey.DATA_FORMAT_ID)).thenReturn(DATA_FORMAT_ID);
-        when(map.get(PropertyMapKey.DATA_FORMAT_VERSION)).thenReturn(DATA_FORMAT_VERSION);
-        when(map.get(PropertyMapKey.LANGUAGE_ID)).thenReturn(LANGUAGE_ID);
-
+    public void createFormTask() {
         FormTask formTask = formTaskService.createFormTask(stubMessage());
-
         assertThat(formTask.getForms().getForm().size(), is(1));
         assertThat(formTask.getServiceCode(), is(SERVICE_CODE));
         assertThat(formTask.getServiceEdition(), is(Integer.parseInt(SERVICE_EDITION_CODE)));

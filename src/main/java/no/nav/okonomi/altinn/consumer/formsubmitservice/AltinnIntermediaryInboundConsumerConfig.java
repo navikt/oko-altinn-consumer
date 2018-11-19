@@ -4,7 +4,7 @@ import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
 import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import org.apache.cxf.Bus;
-import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +20,10 @@ public class AltinnIntermediaryInboundConsumerConfig extends AltinnConsumerConfi
     private static final String SERVICE_LOCAL_PART = "IIntermediaryInboundExternalEC";
     private static final String PORT_LOCAL_PART = "Intermediary_Port";
 
-    @Value("${nav.altinn-consumer.sbs.srvuser.username}")
+    @Value("${altinn-consumer.srvuser-sbs.username}")
     private String userName;
 
-    @Value("${intermediaryinboundendpoint_url}")
+    @Value("${altinn-consumer.intermediaryinbound.url}")
     private String endpointAddress;
 
     private Bus bus = createBus();
@@ -44,14 +44,9 @@ public class AltinnIntermediaryInboundConsumerConfig extends AltinnConsumerConfi
         IIntermediaryInboundExternalEC port = factoryBean.create(IIntermediaryInboundExternalEC.class);
         setRequestContext(port, securityCredentials());
 
-        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler()));
+        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, new ClientCallBackHandler()));
 
         return port;
-    }
-
-    @Bean
-    public ClientCallBackHandler clientCallBackHandler() {
-        return new ClientCallBackHandler();
     }
 
 }

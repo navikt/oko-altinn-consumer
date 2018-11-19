@@ -4,7 +4,7 @@ import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
 import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
-import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,18 +12,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
-import javax.inject.Inject;
 import javax.xml.namespace.QName;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Properties;
 
 import static org.junit.Assert.fail;
 
 public class FormSubmitConsumerTestConfig extends AltinnConsumerConfig {
-
-    @Inject
-    Bus bus;
 
     @Value("${no.nav.os.eskatt.altinnconsumer.intermediary.external.ec.url}")
     private String endpointAddress;
@@ -33,6 +28,8 @@ public class FormSubmitConsumerTestConfig extends AltinnConsumerConfig {
 
     @Value("${no.nav.os.eskatt.srvoseskatt.password}")
     private String password;
+
+    static SecurityCredentials credentials;
 
     public FormSubmitConsumerTestConfig() {
         Properties properties = new Properties();
@@ -57,10 +54,8 @@ public class FormSubmitConsumerTestConfig extends AltinnConsumerConfig {
             "http://www.altinn.no/services/Intermediary/Shipment/IntermediaryInbound/2010/10",
             "Intermediary_Port");
 
-    public static SecurityCredentials credentials;
-
     @Bean
-    public IIntermediaryInboundExternalEC getPortType() throws MalformedURLException {
+    public IIntermediaryInboundExternalEC getPortType() {
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
         factoryBean.setWsdlURL("wsdl/IntermediaryInboundExternalEC.wsdl");
         factoryBean.setServiceName(SERVICE);

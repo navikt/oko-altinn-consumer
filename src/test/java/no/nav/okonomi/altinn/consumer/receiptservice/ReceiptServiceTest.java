@@ -22,10 +22,9 @@ public class ReceiptServiceTest {
     private static final String RECIEVER_REF = "recieverRef";
     private static final Integer RECEIPT_ID = 1;
     private static final String EXT_SHIPMENT_REF = "extShipmentRef";
-    public static final String PREFIX = "OSESKATT_";
 
     @Test
-    public void createReceipt() throws Exception {
+    public void createReceipt() {
         Integer receiptId = 1;
         String extShipmentReference = "extShipmentReference";
 
@@ -34,11 +33,11 @@ public class ReceiptServiceTest {
         assertThat(receiptSearch.getReceiptId(), is(receiptId));
         assertThat(receiptSearch.getReferences().getValue().getReference().size(), is(1));
         assertThat(receiptSearch.getReferences().getValue().getReference().get(0).getReferenceType(), is(ReferenceType.EXTERNAL_SHIPMENT_REFERENCE));
-        assertThat(receiptSearch.getReferences().getValue().getReference().get(0).getReferenceValue(), is(PREFIX+extShipmentReference));
+        assertThat(receiptSearch.getReferences().getValue().getReference().get(0).getReferenceValue(), is(extShipmentReference));
     }
 
     @Test
-    public void updateReceipt_recepitstatus_OK() throws Exception {
+    public void updateReceipt_recepitstatus_OK() {
         ObjectFactory objectFactory = new ObjectFactory();
         Receipt receipt = objectFactory.createReceipt();
         receipt.setReceiptStatus(ReceiptStatusEnum.OK);
@@ -71,7 +70,7 @@ public class ReceiptServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateReceipt_recepitstatus_REJECTED() throws Exception {
+    public void updateReceipt_recepitstatus_REJECTED() {
         ObjectFactory objectFactory = new ObjectFactory();
         Receipt receipt = objectFactory.createReceipt();
         receipt.setReceiptStatus(ReceiptStatusEnum.REJECTED);

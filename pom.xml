@@ -31,9 +31,7 @@
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.release.version>2.5.3</maven.release.version>
         <spring.version>5.0.10.RELEASE</spring.version>
-        <cxf.api.version>3.1.12</cxf.api.version>
-        <cxf.rt.frontend.jaxws.version>3.1.12</cxf.rt.frontend.jaxws.version>
-        <cxf.codegen.plugin.version>3.2.0</cxf.codegen.plugin.version>
+        <cxf.version>3.2.6</cxf.version>
         <logback.version>1.2.3</logback.version>
         <jcl.slf4j.version>1.7.25</jcl.slf4j.version>
         <junit.version>4.12</junit.version>
@@ -60,7 +58,7 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-ws-security</artifactId>
-            <version>${cxf.api.version}</version>
+            <version>${cxf.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jaxb-impl</artifactId>
@@ -71,12 +69,17 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>${cxf.rt.frontend.jaxws.version}</version>
+            <version>${cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
-            <version>${cxf.api.version}</version>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-features-logging</artifactId>
+            <version>${cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -114,7 +117,7 @@
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>${cxf.codegen.plugin.version}</version>
+                <version>${cxf.version}</version>
                 <executions>
                     <execution>
                         <id>wsdl2java-generate</id>

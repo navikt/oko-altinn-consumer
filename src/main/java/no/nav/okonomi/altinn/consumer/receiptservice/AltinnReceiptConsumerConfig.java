@@ -4,7 +4,7 @@ import no.altinn.receiptexternalec.IReceiptExternalEC;
 import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import org.apache.cxf.Bus;
-import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +20,10 @@ public class AltinnReceiptConsumerConfig extends AltinnConsumerConfig {
     private static final String SERVICE_LOCAL_PART = "ReceiptExternalEC";
     private static final String PORT_LOCAL_PART = "CustomBinding_IReceiptExternalEC";
 
-    @Value("${nav.altinn-consumer.sbs.srvuser.username}")
+    @Value("${altinn-consumer.srvuser-sbs.username}")
     private String userName;
 
-    @Value("${no.nav.altinn.consumer.external.ec.url}")
+    @Value("${altinn-consumer.receipt.url}")
     private String endpointAddress;
 
     private Bus bus = createBus();
