@@ -22,7 +22,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.fail;
 
-public class CorrespondenceConsumerTestConfig extends AltinnConsumerConfig {
+public class CorrespondenceConsumerTestConfig extends AbstractConfig {
 
     @Inject
     Bus bus;

@@ -1,7 +1,7 @@
 package no.nav.okonomi.altinn.consumer.correspondenceservice;
 
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
+import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.xml.namespace.QName;
 
 @Configuration
-public class AltinnCorrespondenceConsumerConfig extends AltinnConsumerConfig {
+public class AltinnCorrespondenceConsumerConfig extends AbstractConfig {
 
     private static final String NAMESPACE = "http://www.altinn.no/services/ServiceEngine/Correspondence/2010/10";
     private static final String SERVICE_LOCAL_PART = "CorrespondenceExternalECSF";
@@ -26,12 +26,11 @@ public class AltinnCorrespondenceConsumerConfig extends AltinnConsumerConfig {
     @Value("${altinn-consumer.correspondence.url}")
     private String endpointAddress;
 
-    private Bus bus = createBus();
-
     @Bean
     public ICorrespondenceExternalEC getAltinnCorrespondencePortType() {
+        Bus bus = createBus();
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-        factoryBean.setWsdlURL("wsdl/CorrespondenceExternalEC.wsdl");
+        factoryBean.setWsdlURL("classpath:wsdl/CorrespondenceExternalEC.wsdl");
         factoryBean.setServiceName(new QName(NAMESPACE, SERVICE_LOCAL_PART));
         factoryBean.setEndpointName(new QName(NAMESPACE, PORT_LOCAL_PART));
         factoryBean.setServiceClass(ICorrespondenceExternalEC.class);

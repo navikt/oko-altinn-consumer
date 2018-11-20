@@ -1,7 +1,7 @@
 package no.nav.okonomi.altinn.consumer.receiptservice;
 
 import no.altinn.receiptexternalec.IReceiptExternalEC;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
+import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.xml.namespace.QName;
 
 @Configuration
-public class AltinnReceiptConsumerConfig extends AltinnConsumerConfig {
+public class AltinnReceiptConsumerConfig extends AbstractConfig {
 
     private static final String NAMESPACE = "http://www.altinn.no/services/Intermediary/Receipt/2009/10";
     private static final String SERVICE_LOCAL_PART = "ReceiptExternalEC";
@@ -26,12 +26,11 @@ public class AltinnReceiptConsumerConfig extends AltinnConsumerConfig {
     @Value("${altinn-consumer.receipt.url}")
     private String endpointAddress;
 
-    private Bus bus = createBus();
-
     @Bean
     public IReceiptExternalEC getAltinnReceiptPortType() {
+        Bus bus = createBus();
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-        factoryBean.setWsdlURL("wsdl/ReceiptExternalEC.wsdl");
+        factoryBean.setWsdlURL("classpath:wsdl/ReceiptExternalEC.wsdl");
         factoryBean.setServiceName(new QName(NAMESPACE, SERVICE_LOCAL_PART));
         factoryBean.setEndpointName(new QName(NAMESPACE, PORT_LOCAL_PART));
         factoryBean.setServiceClass(IReceiptExternalEC.class);

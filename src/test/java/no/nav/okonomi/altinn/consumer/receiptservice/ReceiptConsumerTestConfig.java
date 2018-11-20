@@ -1,7 +1,7 @@
 package no.nav.okonomi.altinn.consumer.receiptservice;
 
 import no.altinn.receiptexternalec.IReceiptExternalEC;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
+import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.feature.LoggingFeature;
@@ -23,7 +23,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.fail;
 
-public class ReceiptConsumerTestConfig extends AltinnConsumerConfig {
+public class ReceiptConsumerTestConfig extends AbstractConfig {
 
     @Inject
     Bus bus;

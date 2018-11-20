@@ -1,7 +1,7 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
 import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerConfig;
+import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -18,7 +18,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.fail;
 
-public class FormSubmitConsumerTestConfig extends AltinnConsumerConfig {
+public class FormSubmitConsumerTestConfig extends AbstractConfig {
 
     @Value("${no.nav.os.eskatt.altinnconsumer.intermediary.external.ec.url}")
     private String endpointAddress;
