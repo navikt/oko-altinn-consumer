@@ -2,6 +2,7 @@ package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
 import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
 import no.nav.okonomi.altinn.consumer.AbstractConfig;
+import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -41,7 +42,13 @@ public class AltinnIntermediaryInboundConsumerConfig extends AbstractConfig {
         factoryBean.getFeatures().add(loggingFeature);
         factoryBean.setProperties(cryptoProperties());
         IIntermediaryInboundExternalEC port = (IIntermediaryInboundExternalEC) factoryBean.create();
+        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler()));
         return port;
+    }
+
+    @Bean
+    public ClientCallBackHandler clientCallBackHandler() {
+        return new ClientCallBackHandler();
     }
 
 }

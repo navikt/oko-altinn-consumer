@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import javax.xml.bind.JAXB;
+import java.io.StringWriter;
 
 /**
  * Created by Levent Demir (Capgemini)
@@ -69,6 +71,7 @@ public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitC
 
     private ReceiptExternalBE submitFormTaskEC(FormTaskShipmentBE formTaskShipment) {
         try {
+            logFormTaskShipment(formTaskShipment);
             return formSubmitService.submitFormTaskEC(credentials.getVirksomhetsbruker(), credentials.getVirksomhetsbrukerPassord(), formTaskShipment);
         } catch (IIntermediaryInboundExternalECSubmitFormTaskECAltinnFaultFaultFaultMessage e) {
             LOGGER.error(getAltinnErrorMessage(e));
@@ -80,6 +83,12 @@ public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitC
             LOGGER.error("Ukjent feil oppstått: {}", e);
             throw new AltinnFormSubmitServiceException(FEIL_VED_AA_SENDE, e);
         }
+    }
+
+    private void logFormTaskShipment(FormTaskShipmentBE formTaskShipment) {
+        StringWriter xml = new StringWriter();
+        JAXB.marshal(formTaskShipment, xml);
+        LOGGER.debug("Formtaskshipment til Altinn: {}", xml);
     }
 
     private String getAltinnErrorMessage(IIntermediaryInboundExternalECSubmitFormTaskECAltinnFaultFaultFaultMessage altinne) {
