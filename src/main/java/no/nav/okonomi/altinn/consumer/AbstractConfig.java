@@ -24,10 +24,10 @@ import java.util.Properties;
 
 public class AbstractConfig {
 
-    @Value("${altinn-consumer.virksomhet.password}")
+    @Value("${altinn-consumer.virksomhet.username}")
     private String virksomhetUserName;
 
-    @Value("${altinn-consumer.virksomhet.username}")
+    @Value("${altinn-consumer.virksomhet.password}")
     private String virksomhetPassord;
 
 
