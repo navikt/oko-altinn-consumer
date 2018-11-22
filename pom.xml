@@ -4,7 +4,7 @@
 
     <groupId>no.nav.okonomi</groupId>
     <artifactId>oko-altinn-consumer</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <ciManagement>
@@ -212,7 +212,7 @@
         <url>http://stash.devillo.no/scm/oko/oko-altinn-consumer.git</url>
         <connection>scm:git:ssh://git@stash.devillo.no:7999/oko/oko-altinn-consumer.git</connection>
         <developerConnection>scm:git:ssh://git@stash.devillo.no:7999/oko/oko-altinn-consumer.git</developerConnection>
-        <tag>oko-altinn-consumer-1.0.0</tag>
+        <tag>oko-altinn-consumer-1.0.3</tag>
     </scm>
 
     <distributionManagement>
