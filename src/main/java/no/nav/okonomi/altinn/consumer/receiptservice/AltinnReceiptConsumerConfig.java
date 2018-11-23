@@ -3,6 +3,7 @@ package no.nav.okonomi.altinn.consumer.receiptservice;
 import no.altinn.receiptexternalec.IReceiptExternalEC;
 import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
+import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -27,7 +28,8 @@ public class AltinnReceiptConsumerConfig extends AbstractConfig {
     private String endpointAddress;
 
     @Bean
-    public IReceiptExternalEC getAltinnReceiptPortType() {
+    public IReceiptExternalEC getAltinnReceiptPortType(
+            ClientCallBackHandler clientCallBackHandler, SecurityCredentials securityCredentials) {
         Bus bus = createBus();
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
         factoryBean.setWsdlURL("classpath:wsdl/ReceiptExternalEC.wsdl");
@@ -40,17 +42,11 @@ public class AltinnReceiptConsumerConfig extends AbstractConfig {
         loggingFeature.setPrettyLogging(true);
         loggingFeature.initialize(bus);
         factoryBean.getFeatures().add(loggingFeature);
+        factoryBean.setProperties(cryptoProperties(securityCredentials));
         IReceiptExternalEC port = factoryBean.create(IReceiptExternalEC.class);
-        setRequestContext(port, securityCredentials());
-
-        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler()));
-
+        setRequestContext(port, securityCredentials);
+        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler));
         return port;
-    }
-
-    @Bean
-    public ClientCallBackHandler clientCallBackHandler() {
-        return new ClientCallBackHandler();
     }
 
 }

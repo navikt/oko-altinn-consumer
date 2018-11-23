@@ -3,6 +3,7 @@ package no.nav.okonomi.altinn.consumer.formsubmitservice;
 import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
 import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
+import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -27,7 +28,8 @@ public class AltinnIntermediaryInboundConsumerConfig extends AbstractConfig {
     private String endpointAddress;
 
     @Bean
-    public IIntermediaryInboundExternalEC getAltinnIntermediaryInboundPortType() {
+    public IIntermediaryInboundExternalEC getAltinnIntermediaryInboundPortType(
+            ClientCallBackHandler clientCallBackHandler, SecurityCredentials securityCredentials) {
         Bus bus = createBus();
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
         factoryBean.setWsdlURL("classpath:wsdl/IntermediaryInboundExternalEC.wsdl");
@@ -40,15 +42,11 @@ public class AltinnIntermediaryInboundConsumerConfig extends AbstractConfig {
         loggingFeature.setPrettyLogging(true);
         loggingFeature.initialize(bus);
         factoryBean.getFeatures().add(loggingFeature);
-        factoryBean.setProperties(cryptoProperties());
+        factoryBean.setProperties(cryptoProperties(securityCredentials));
         IIntermediaryInboundExternalEC port = (IIntermediaryInboundExternalEC) factoryBean.create();
-        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler()));
+        setRequestContext(port, securityCredentials);
+        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler));
         return port;
-    }
-
-    @Bean
-    public ClientCallBackHandler clientCallBackHandler() {
-        return new ClientCallBackHandler();
     }
 
 }

@@ -3,6 +3,7 @@ package no.nav.okonomi.altinn.consumer.correspondenceservice;
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC;
 import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
+import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -27,7 +28,8 @@ public class AltinnCorrespondenceConsumerConfig extends AbstractConfig {
     private String endpointAddress;
 
     @Bean
-    public ICorrespondenceExternalEC getAltinnCorrespondencePortType() {
+    public ICorrespondenceExternalEC getAltinnCorrespondencePortType(
+            ClientCallBackHandler clientCallBackHandler, SecurityCredentials securityCredentials) {
         Bus bus = createBus();
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
         factoryBean.setWsdlURL("classpath:wsdl/CorrespondenceExternalEC.wsdl");
@@ -40,11 +42,10 @@ public class AltinnCorrespondenceConsumerConfig extends AbstractConfig {
         loggingFeature.setPrettyLogging(true);
         loggingFeature.initialize(bus);
         factoryBean.getFeatures().add(loggingFeature);
+        factoryBean.setProperties(cryptoProperties(securityCredentials));
         ICorrespondenceExternalEC port = factoryBean.create(ICorrespondenceExternalEC.class);
-        setRequestContext(port, securityCredentials());
-
-        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, new ClientCallBackHandler()));
-
+        setRequestContext(port, securityCredentials);
+        bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler));
         return port;
     }
 

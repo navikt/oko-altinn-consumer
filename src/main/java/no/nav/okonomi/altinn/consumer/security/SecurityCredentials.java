@@ -9,11 +9,14 @@ import java.util.Properties;
  */
 public class SecurityCredentials {
 
+    private KeyStore keyStore;
+
     private Properties keyStoreProperties;
 
     private String virksomhetsbruker;
 
     private String virksomhetsbrukerPassord;
+
 
     public SecurityCredentials() {
         super();
@@ -27,16 +30,17 @@ public class SecurityCredentials {
      */
     public SecurityCredentials(String virksomhetsbruker,
                                String virksomhetsbrukerPassord,
-                               Properties keyStore) {
+                               KeyStore keyStore) {
         this.virksomhetsbruker = virksomhetsbruker;
         this.virksomhetsbrukerPassord = virksomhetsbrukerPassord;
+        this.keyStore = keyStore;
         keyStoreProperties = new Properties();
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.provider", "org.apache.ws.security.components.crypto.Merlin");
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.file", keyStore.getProperty("keystore"));
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.password", keyStore.getProperty("keystorepassword"));
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.type", "jks");
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.private.password", keyStore.getProperty("keystorepassword"));
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.alias", keyStore.getProperty("keystorealias"));
+        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.file", keyStore.getKeystorefile());
+        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.password", keyStore.getSecret());
+        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.type", keyStore.getType());
+        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.private.password", keyStore.getSecret());
+        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.alias", keyStore.getKeystorealias());
     }
 
     /**
@@ -53,15 +57,12 @@ public class SecurityCredentials {
                                String securityFile,
                                String securityPassword,
                                String securityAlias) {
-        this.virksomhetsbruker = virksomhetsbruker;
-        this.virksomhetsbrukerPassord = virksomhetsbrukerPassord;
-        keyStoreProperties = new Properties();
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.provider", "org.apache.ws.security.components.crypto.Merlin");
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.file", securityFile);
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.password", securityPassword);
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.type", "pkcs12");
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.private.password", securityPassword);
-        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.alias", securityAlias);
+        this(virksomhetsbruker, virksomhetsbrukerPassord,
+                new KeyStore(securityFile, securityPassword, securityAlias, "pkcs12"));
+    }
+
+    public KeyStore getKeyStore() {
+        return keyStore;
     }
 
     public Properties getKeyStoreProperties() {
