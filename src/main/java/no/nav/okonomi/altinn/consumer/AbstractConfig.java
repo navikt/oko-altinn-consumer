@@ -4,7 +4,6 @@ import no.nav.okonomi.altinn.consumer.interceptor.BadContextTokenInFaultIntercep
 import no.nav.okonomi.altinn.consumer.interceptor.CookiesInInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.CookiesOutInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.HeaderInterceptor;
-import no.nav.okonomi.altinn.consumer.interceptor.MessageInterceptor;
 import no.nav.okonomi.altinn.consumer.security.KeyStore;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
@@ -47,7 +46,6 @@ public abstract class AbstractConfig {
         bus.getOutInterceptors().add(new CookiesOutInterceptor());
         bus.getOutInterceptors().add(new HeaderInterceptor());
         bus.getInFaultInterceptors().add(new BadContextTokenInFaultInterceptor());
-        bus.getInInterceptors().add(new MessageInterceptor());
 
         return bus;
     }
