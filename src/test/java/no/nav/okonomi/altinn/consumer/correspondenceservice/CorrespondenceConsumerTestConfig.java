@@ -1,6 +1,6 @@
-//package no.nav.okonomi.altinn.consumer.receiptservice;
+//package no.nav.okonomi.altinn.consumer.correspondenceservice;
 //
-//import no.altinn.receiptexternalec.IReceiptExternalEC;
+//import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC;
 //import no.nav.okonomi.altinn.consumer.AbstractConfig;
 //import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 //import org.apache.cxf.Bus;
@@ -23,12 +23,12 @@
 //
 //import static org.junit.Assert.fail;
 //
-//public class ReceiptConsumerTestConfig extends AbstractConfig {
+//public class CorrespondenceConsumerTestConfig extends AbstractConfig {
 //
 //    @Inject
 //    Bus bus;
 //
-//    @Value("${no.nav.os.eskatt.altinnconsumer.receipt.external.ec.url}")
+//    @Value("${no.nav.os.eskatt.altinnconsumer.correspondence.external.ec.url}")
 //    private String endpointAddress;
 //
 //    @Value("${no.nav.os.eskatt.srvoseskatt.username}")
@@ -37,9 +37,9 @@
 //    @Value("${no.nav.os.eskatt.srvoseskatt.password}")
 //    private String password;
 //
-//    static SecurityCredentials credentials;
+//    public static SecurityCredentials credentials;
 //
-//    public ReceiptConsumerTestConfig() {
+//    public CorrespondenceConsumerTestConfig() {
 //        Properties properties = new Properties();
 //        try {
 //            properties.loadFromXML(new ClassPathResource("properties/navtestklient-properties.xml").getInputStream());
@@ -54,37 +54,25 @@
 //                properties.getProperty("testklient.alias"));
 //    }
 //
-////    @Bean
-////    public IReceiptExternalEC getAltinnReceiptPortType() {
-////        ReceiptExternalEC service = new ReceiptExternalEC();
-////        IReceiptExternalEC port = service.getCustomBindingIReceiptExternalEC();
-////         bus.getOutInterceptors().add(wss4JOutInterceptor(userName, new TestClientCallBackHandler()));
-////        BindingProvider bindingProvider = (BindingProvider) port;
-////        bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
-////        setRequestContext(port, credentials);
-////
-////        return port;
-////    }
-//
 //    private static final QName SERVICE = new QName(
-//            "http://www.altinn.no/services/Intermediary/Receipt/2009/10",
-//            "ReceiptExternalEC");
+//            "http://www.altinn.no/services/ServiceEngine/Correspondence/2010/10",
+//            "CorrespondenceExternalECSF");
 //
 //    private static final QName PORT = new QName(
-//            "http://www.altinn.no/services/Intermediary/Receipt/2009/10",
-//            "CustomBinding_IReceiptExternalEC");
+//            "http://www.altinn.no/services/ServiceEngine/Correspondence/2010/10",
+//            "CustomBinding_ICorrespondenceExternalEC");
 //
 //    @Bean
-//    public IReceiptExternalEC getPortType() {
+//    public ICorrespondenceExternalEC getAltinnCorrespondencePortType() {
 //        JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-//        factoryBean.setWsdlURL("wsdl/ReceiptExternalEC.wsdl");
+//        factoryBean.setWsdlURL("wsdl/CorrespondenceExternalEC.wsdl");
 //        factoryBean.setServiceName(SERVICE);
 //        factoryBean.setEndpointName(PORT);
-//        factoryBean.setServiceClass(IReceiptExternalEC.class);
+//        factoryBean.setServiceClass(ICorrespondenceExternalEC.class);
 //        factoryBean.setAddress(endpointAddress);
 //        factoryBean.getFeatures().add(new WSAddressingFeature());
 //        factoryBean.getFeatures().add(new LoggingFeature());
-//        IReceiptExternalEC port = factoryBean.create(IReceiptExternalEC.class);
+//        ICorrespondenceExternalEC port = factoryBean.create(ICorrespondenceExternalEC.class);
 //
 //        return port;
 //    }
@@ -100,6 +88,7 @@
 //    }
 //
 //    private class TestClientCallBackHandler implements CallbackHandler {
+//
 //        @Override
 //        public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 //            WSPasswordCallback wsPasswordCallback = (WSPasswordCallback) callbacks[0];
