@@ -1,13 +1,6 @@
 package no.nav.okonomi.altinn.consumer.correspondenceservice;
 
-import no.altinn.correspondenceexternalec.AltinnFault;
-import no.altinn.correspondenceexternalec.AttachmentBEV2;
-import no.altinn.correspondenceexternalec.AttachmentBEV2List;
-import no.altinn.correspondenceexternalec.AttachmentType;
-import no.altinn.correspondenceexternalec.CorrespondenceForEndUserSystemV2;
-import no.altinn.correspondenceexternalec.CorrespondenceV2;
-import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC;
-import no.altinn.correspondenceexternalec.ICorrespondenceExternalECGetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage;
+import no.altinn.correspondenceexternalec.*;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import no.nav.okonomi.altinn.consumer.utility.XMLUtil;
@@ -38,12 +31,12 @@ public class DefaultAltinnCorrespondenceConsumerService implements AltinnCorresp
     @Value("${nav.altinn-consumer.languageid:1044}")
     private int languageId;
 
-    private final ICorrespondenceExternalEC correspondencesService;
+    private final ICorrespondenceExternalEC2 correspondencesService;
 
     private SecurityCredentials credentials;
 
     @Autowired
-    public DefaultAltinnCorrespondenceConsumerService(ICorrespondenceExternalEC correspondenceService,
+    public DefaultAltinnCorrespondenceConsumerService(ICorrespondenceExternalEC2 correspondenceService,
                                                       SecurityCredentials credentials) {
         this.correspondencesService = correspondenceService;
         this.credentials = credentials;
@@ -66,7 +59,6 @@ public class DefaultAltinnCorrespondenceConsumerService implements AltinnCorresp
                     bytes = decompress(bytes, Integer.valueOf(submitFormTask.getReceiversReference()));
                     return XMLUtil.getDocument(bytes, true);
                 } catch (ParserConfigurationException | SAXException | IOException e) {
-                    LOGGER.warn("Melding feilet hos mottakeren: {}", e);
                     throw new AltinnCorrespondenceServiceException("Feil ved å behandle vedlegget fra Altinn: ", e);
                 }
             }
@@ -88,7 +80,7 @@ public class DefaultAltinnCorrespondenceConsumerService implements AltinnCorresp
     private CorrespondenceForEndUserSystemV2 correspondence(Integer reporteeElementID) {
         try {
             return correspondencesService.getCorrespondenceForEndUserSystemsEC(credentials.getVirksomhetsbruker(), credentials.getVirksomhetsbrukerPassord(), reporteeElementID, languageId);
-        } catch (ICorrespondenceExternalECGetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage altinne) {
+        } catch (ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage altinne) {
             LOGGER.error(getAltinnErrorMessage(altinne));
             throw new AltinnCorrespondenceServiceException(FEIL_VED_AA_MOTTA, altinne);
         } catch (IllegalArgumentException iae) {
@@ -101,7 +93,7 @@ public class DefaultAltinnCorrespondenceConsumerService implements AltinnCorresp
 
     }
 
-    private String getAltinnErrorMessage(ICorrespondenceExternalECGetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage altinne) {
+    private String getAltinnErrorMessage(ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage altinne) {
         AltinnFault fault = altinne.getFaultInfo();
         String errMsg = fault.getAltinnErrorMessage().getValue();
         Integer errId = fault.getErrorID();

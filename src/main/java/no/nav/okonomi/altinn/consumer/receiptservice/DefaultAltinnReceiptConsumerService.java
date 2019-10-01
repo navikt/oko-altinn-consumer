@@ -1,6 +1,6 @@
 package no.nav.okonomi.altinn.consumer.receiptservice;
 
-import no.altinn.receiptexternalec.IReceiptExternalEC;
+import no.altinn.receiptexternalec.IReceiptExternalEC2;
 import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
@@ -20,12 +20,12 @@ public class DefaultAltinnReceiptConsumerService implements AltinnReceiptConsume
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAltinnReceiptConsumerService.class);
 
-    private final IReceiptExternalEC iReceiptExternalEC;
+    private final IReceiptExternalEC2 iReceiptExternalEC;
     private SecurityCredentials credentials;
     private ReceiptService receiptService;
 
     @Inject
-    public DefaultAltinnReceiptConsumerService(IReceiptExternalEC iReceiptExternalEC,
+    public DefaultAltinnReceiptConsumerService(IReceiptExternalEC2 iReceiptExternalEC,
                                                SecurityCredentials credentials,
                                                ReceiptService receiptService) {
         this.credentials = credentials;
@@ -49,7 +49,6 @@ public class DefaultAltinnReceiptConsumerService implements AltinnReceiptConsume
                     receipt,
                     submitFormTask);
         } catch (Exception e) {
-            LOGGER.error("Henting av kvittering fra Altinn feilet", e);
             throw new AltinnReceiptServiceException("Henting av kvittering fra Altinn feilet ", e);
         }
     }

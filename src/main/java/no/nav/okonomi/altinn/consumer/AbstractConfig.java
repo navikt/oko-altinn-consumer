@@ -9,8 +9,6 @@ import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBusFactory;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.ext.logging.LoggingFeature;
-import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.WSConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
@@ -24,9 +22,7 @@ public abstract class AbstractConfig {
 
     private final SpringBusFactory busFactory = new SpringBusFactory();
 
-    @SuppressWarnings("squid:S2095")
-    protected void setRequestContext(Object port, SecurityCredentials credentials) {
-        Client client = ClientProxy.getClient(port);
+    protected void setRequestContext(Client client, SecurityCredentials credentials) {
         client.getRequestContext().put("security.must-understand", Boolean.TRUE);
         client.getRequestContext().put("org.apache.cxf.message.Message.MAINTAIN_SESSION", Boolean.TRUE);
         client.getRequestContext().put("javax.xml.ws.session.maintain", Boolean.TRUE);
@@ -38,10 +34,10 @@ public abstract class AbstractConfig {
     @SuppressWarnings("unchecked")
     protected Bus createBus() {
         Bus bus = busFactory.createBus();
-        LoggingFeature loggingFeature = new LoggingFeature();
-        loggingFeature.setPrettyLogging(true);
-        loggingFeature.initialize(bus);
-        bus.getFeatures().add(loggingFeature);
+   //     LoggingFeature loggingFeature = new LoggingFeature();
+   //     loggingFeature.setPrettyLogging(true);
+   //     loggingFeature.initialize(bus);
+   //     bus.getFeatures().add(loggingFeature);
         bus.getInInterceptors().add(new CookiesInInterceptor());
         bus.getOutInterceptors().add(new CookiesOutInterceptor());
         bus.getOutInterceptors().add(new HeaderInterceptor());

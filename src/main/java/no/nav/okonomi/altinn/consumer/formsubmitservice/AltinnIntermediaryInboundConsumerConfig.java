@@ -1,25 +1,21 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
-import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2;
+import no.altinn.intermediaryinboundexternalec.IntermediaryInboundExternalEC2;
 import no.nav.okonomi.altinn.consumer.AbstractConfig;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
-import org.apache.cxf.ext.logging.LoggingFeature;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.apache.cxf.ws.addressing.WSAddressingFeature;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
 
 @Configuration
 public class AltinnIntermediaryInboundConsumerConfig extends AbstractConfig {
-
-    private static final String NAMESPACE = "http://www.altinn.no/services/Intermediary/Shipment/IntermediaryInbound/2010/10";
-    private static final String SERVICE_LOCAL_PART = "IIntermediaryInboundExternalEC";
-    private static final String PORT_LOCAL_PART = "Intermediary_Port";
 
     @Value("${altinn-consumer.srvuser-sbs.username}")
     private String userName;
@@ -28,23 +24,15 @@ public class AltinnIntermediaryInboundConsumerConfig extends AbstractConfig {
     private String endpointAddress;
 
     @Bean
-    public IIntermediaryInboundExternalEC getAltinnIntermediaryInboundPortType(
+    public IIntermediaryInboundExternalEC2 getAltinnIntermediaryInboundPortType(
             ClientCallBackHandler clientCallBackHandler, SecurityCredentials securityCredentials) {
+        IntermediaryInboundExternalEC2 service = new IntermediaryInboundExternalEC2();
+        IIntermediaryInboundExternalEC2 port = service.getCustomBindingIIntermediaryInboundExternalEC2();
+        BindingProvider bindingProvider = (BindingProvider) port;
+        bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,endpointAddress);
+        Client client = ClientProxy.getClient(port);
         Bus bus = createBus();
-        JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-        factoryBean.setWsdlURL("classpath:wsdl/IntermediaryInboundExternalEC.wsdl");
-        factoryBean.setServiceName(new QName(NAMESPACE, SERVICE_LOCAL_PART));
-        factoryBean.setEndpointName(new QName(NAMESPACE, PORT_LOCAL_PART));
-        factoryBean.setServiceClass(IIntermediaryInboundExternalEC.class);
-        factoryBean.setAddress(endpointAddress);
-        factoryBean.getFeatures().add(new WSAddressingFeature());
-        LoggingFeature loggingFeature = new LoggingFeature();
-        loggingFeature.setPrettyLogging(true);
-        loggingFeature.initialize(bus);
-        factoryBean.getFeatures().add(loggingFeature);
-        factoryBean.setProperties(cryptoProperties(securityCredentials));
-        IIntermediaryInboundExternalEC port = (IIntermediaryInboundExternalEC) factoryBean.create();
-        setRequestContext(port, securityCredentials);
+        setRequestContext(client, securityCredentials);
         bus.getOutInterceptors().add(wss4JOutInterceptor(userName, clientCallBackHandler));
         return port;
     }

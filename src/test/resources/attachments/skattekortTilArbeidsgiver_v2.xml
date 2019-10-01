@@ -1,0 +1,43 @@
+<urn:skattekortTilArbeidsgiver xmlns:urn="urn:ske:fastsetting:formueinntekt:forskudd:skattekorttilarbeidsgiver:v2">
+<!--1 or more repetitions:-->
+<urn:arbeidsgiver>
+    <urn:arbeidsgiveridentifikator>
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <!--Optional:-->
+        <urn:organisasjonsnummer>828134625</urn:organisasjonsnummer>
+    </urn:arbeidsgiveridentifikator>
+    <!--1 or more repetitions:-->
+    <urn:arbeidstaker>
+        <urn:arbeidstakeridentifikator>01014600011</urn:arbeidstakeridentifikator>
+        <urn:resultatPaaForespoersel>skattekortopplysningerOK</urn:resultatPaaForespoersel>
+        <!--Optional:-->
+        <urn:skattekort>
+            <urn:utstedtDato>2007-10-26</urn:utstedtDato>
+            <urn:skattekortidentifikator>20</urn:skattekortidentifikator>
+            <!--1 or more repetitions:-->
+            <urn:forskuddstrekk>
+                <urn:trekkode>ufoereytelserFraAndre</urn:trekkode>
+            </urn:forskuddstrekk>
+        </urn:skattekort>
+        <!--Zero or more repetitions:-->
+        <urn:tilleggsopplysning>oppholdPaaSvalbard</urn:tilleggsopplysning>
+        <urn:inntektsaar>2017</urn:inntektsaar>
+    </urn:arbeidstaker>
+    <urn:arbeidstaker>
+        <urn:arbeidstakeridentifikator>04044600035</urn:arbeidstakeridentifikator>
+        <urn:resultatPaaForespoersel>skattekortopplysningerOK</urn:resultatPaaForespoersel>
+        <!--Optional:-->
+        <urn:skattekort>
+            <urn:utstedtDato>2007-10-26</urn:utstedtDato>
+            <urn:skattekortidentifikator>10</urn:skattekortidentifikator>
+            <!--1 or more repetitions:-->
+            <urn:forskuddstrekk>
+                <urn:trekkode>ufoereytelserFraAndre</urn:trekkode>
+            </urn:forskuddstrekk>
+        </urn:skattekort>
+        <!--Zero or more repetitions:-->
+        <urn:tilleggsopplysning>oppholdPaaSvalbard</urn:tilleggsopplysning>
+        <urn:inntektsaar>2017</urn:inntektsaar>
+    </urn:arbeidstaker>
+</urn:arbeidsgiver>
+</urn:skattekortTilArbeidsgiver>
