@@ -4,13 +4,11 @@ import no.altinn.intermediaryinboundexternalec.ArrayOfAttachment;
 import no.altinn.intermediaryinboundexternalec.Attachment;
 import no.altinn.intermediaryinboundexternalec.ObjectFactory;
 import no.nav.okonomi.altinn.consumer.utility.ByteUtil;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Service
-class AttachmentService {
+public class AttachmentService {
 
     private ObjectFactory objectFactory = new ObjectFactory();
 

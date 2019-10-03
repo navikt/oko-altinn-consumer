@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultAltinnFormSubmitConsumerServiceTest {
+class AltinnFormSubmitConsumerServiceTest {
 
     private static final String SERVICE_CODE = "serviceCode";
     private static final String SERVICE_EDITION_CODE = "1";
@@ -40,7 +40,7 @@ class DefaultAltinnFormSubmitConsumerServiceTest {
     private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(new AttachmentService(), new FormTaskService(new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION)));
 
     @InjectMocks
-    private DefaultAltinnFormSubmitConsumerService altinnFormSubmitConsumerService;
+    private AltinnFormSubmitConsumerService altinnFormSubmitConsumerService;
 
     @Test
     void submitForm() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage {

@@ -3,25 +3,25 @@ package no.nav.okonomi.altinn.consumer.correspondenceservice;
 import no.altinn.correspondenceexternalec.*;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.StreamUtils;
 import org.w3c.dom.Document;
 
 import javax.xml.bind.JAXBElement;
-
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultAltinnCorrespondenceConsumerServiceTest {
+class AltinnCorrespondenceConsumerServiceTest {
 
+    private static final int LANGUAGE_ID = 1044;
 
     @Mock
     private  ICorrespondenceExternalEC2 correspondenceService;
@@ -29,13 +29,17 @@ class DefaultAltinnCorrespondenceConsumerServiceTest {
     @Mock
     private SecurityCredentials securityCredentials;
 
-    @InjectMocks
-    private DefaultAltinnCorrespondenceConsumerService altinnCorrespondenceConsumerService;
+    private AltinnCorrespondenceConsumerService altinnCorrespondenceConsumerService;
+
+    @BeforeEach
+    void setUp(){
+        altinnCorrespondenceConsumerService = new AltinnCorrespondenceConsumerService(correspondenceService,securityCredentials, LANGUAGE_ID);
+    }
 
     @Test
     void shouldReturnDocument() throws ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage, IOException {
         CorrespondenceForEndUserSystemV2 correspondenceForEndUserSystemV2 = createCorrespondenceForEndUserSystemV2();
-        when(correspondenceService.getCorrespondenceForEndUserSystemsEC(null,null,4973347,0)).thenReturn(correspondenceForEndUserSystemV2);
+        when(correspondenceService.getCorrespondenceForEndUserSystemsEC(null,null,4973347,LANGUAGE_ID)).thenReturn(correspondenceForEndUserSystemV2);
 
         SubmitFormTask sft = new SubmitFormTask(11663407, "90f70a46-cb4e-4dcc-9138-45bc3fdf8f91", "AR3697057", "4973347");
         Document document = altinnCorrespondenceConsumerService.retrieveDocument(sft);
@@ -58,7 +62,8 @@ class DefaultAltinnCorrespondenceConsumerServiceTest {
         AttachmentBEV2 attachmentBEV2 = factory.createAttachmentBEV2();
         attachmentBEV2.setAttachmentTypeID(AttachmentType.TEXT_XML);
         InputStream resourceAsStream = getClass().getResourceAsStream("/attachments/skattekortTilArbeidsgiver_v2.xml");
-        byte[] data = StreamUtils.copyToByteArray(resourceAsStream);
+        byte[] data = IOUtils.toByteArray(resourceAsStream);
+
         JAXBElement<byte[]> attachmentBEV2AttachmentData = factory.createAttachmentBEV2AttachmentData(data);
         attachmentBEV2.setAttachmentData(attachmentBEV2AttachmentData);
         return attachmentBEV2;

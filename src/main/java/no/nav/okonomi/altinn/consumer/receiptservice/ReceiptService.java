@@ -2,19 +2,13 @@ package no.nav.okonomi.altinn.consumer.receiptservice;
 
 import no.altinn.receiptexternalec.ReceiptStatusEnum;
 import no.altinn.receiptexternalec.ReferenceType;
-import no.altinn.receiptexternalec.v201506.ObjectFactory;
-import no.altinn.receiptexternalec.v201506.Receipt;
-import no.altinn.receiptexternalec.v201506.ReceiptSearch;
-import no.altinn.receiptexternalec.v201506.Reference;
-import no.altinn.receiptexternalec.v201506.ReferenceList;
+import no.altinn.receiptexternalec.v201506.*;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
 
-@Service
 public class ReceiptService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptService.class);

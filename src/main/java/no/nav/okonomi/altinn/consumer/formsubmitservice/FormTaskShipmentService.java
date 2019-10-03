@@ -3,22 +3,14 @@ package no.nav.okonomi.altinn.consumer.formsubmitservice;
 import no.altinn.intermediaryinboundexternalec.FormTaskShipmentBE;
 import no.altinn.intermediaryinboundexternalec.ObjectFactory;
 import no.nav.okonomi.altinn.consumer.utility.ByteUtil;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
-import javax.inject.Inject;
-
-@Service
 public class FormTaskShipmentService {
 
     private ObjectFactory objectFactory;
     private AttachmentService attachmentService;
     private FormTaskService formTaskService;
 
-    @Inject
     public FormTaskShipmentService(AttachmentService attachmentService, FormTaskService formTaskService) {
-        Assert.notNull(attachmentService, "attachmentService must not be null");
-        Assert.notNull(formTaskService, "formTaskService must not be null");
         this.attachmentService = attachmentService;
         this.formTaskService = formTaskService;
         objectFactory = new ObjectFactory();

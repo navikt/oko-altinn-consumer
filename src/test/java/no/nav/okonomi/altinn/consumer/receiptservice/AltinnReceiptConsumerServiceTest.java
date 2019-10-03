@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultAltinnReceiptConsumerServiceTest {
+class AltinnReceiptConsumerServiceTest {
 
     @Mock
     private IReceiptExternalEC2 iReceiptExternalEC;
@@ -35,7 +35,7 @@ class DefaultAltinnReceiptConsumerServiceTest {
     private ReceiptService receiptService;
 
     @InjectMocks
-    DefaultAltinnReceiptConsumerService altinnReceiptConsumerService;
+    AltinnReceiptConsumerService altinnReceiptConsumerService;
 
     @Test
     void getReceiptWithSubmitForm() throws IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage {

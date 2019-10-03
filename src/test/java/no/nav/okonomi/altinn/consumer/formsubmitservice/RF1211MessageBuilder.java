@@ -1,7 +1,5 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
-import org.springframework.util.StringUtils;
-
 public class RF1211MessageBuilder {
 
     private String orderId;
@@ -74,10 +72,10 @@ public class RF1211MessageBuilder {
     }
 
     private void verifyNotNullValues() {
-        boolean stringValuesNotNull = StringUtils.isEmpty(orderId) ||
-                StringUtils.isEmpty(orgnummer) ||
-                StringUtils.isEmpty(navn) ||
-                StringUtils.isEmpty(inntektsaar);
+        boolean stringValuesNotNull = isEmpty(orderId) ||
+                isEmpty(orgnummer) ||
+                isEmpty(navn) ||
+                isEmpty(inntektsaar);
 
         boolean enumValuesNotNull = skattekortVarslingstype == null ||
                 skattekortMeldingstype == null;
@@ -85,6 +83,10 @@ public class RF1211MessageBuilder {
         if (stringValuesNotNull || enumValuesNotNull) {
             throw new IllegalStateException("Not all required values given");
         }
+    }
+
+    private boolean isEmpty(String toTest){
+        return "".equals(toTest) || toTest == null;
     }
 
 }

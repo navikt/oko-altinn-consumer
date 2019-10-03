@@ -4,18 +4,13 @@ import no.altinn.intermediaryinboundexternalec.ArrayOfForm;
 import no.altinn.intermediaryinboundexternalec.Form;
 import no.altinn.intermediaryinboundexternalec.FormTask;
 import no.altinn.intermediaryinboundexternalec.ObjectFactory;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 
 
-@Service
-class FormTaskService {
+public class FormTaskService {
 
     private ObjectFactory objectFactory;
     private FormSubmitServiceProperties formSubmitServiceProps;
 
-    @Inject
     public FormTaskService(FormSubmitServiceProperties formSubmitServiceProps) {
         this.objectFactory = new ObjectFactory();
         this.formSubmitServiceProps = formSubmitServiceProps;
