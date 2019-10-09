@@ -26,7 +26,7 @@ public interface AltinnConsumerProperties {
 
      String getAppcertSecret();
 
-     String getAppcertKeystore();
+     String getAppcertKeystoreFilePath();
 
      String getLanguageId();
 

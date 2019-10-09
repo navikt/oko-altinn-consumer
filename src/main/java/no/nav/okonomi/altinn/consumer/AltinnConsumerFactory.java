@@ -32,14 +32,17 @@ import java.util.Map;
 public class AltinnConsumerFactory {
 
     private final AltinnConsumerProperties altinnConsumerProperties;
-    private final CXFBusFactory busFactory = new CXFBusFactory();
 
     public AltinnConsumerFactory(){
         this.altinnConsumerProperties = new EnviromentPropertiesReader();
+        addInterceptors();
+
     }
 
     public AltinnConsumerFactory(AltinnConsumerProperties altinnConsumerProperties){
         this.altinnConsumerProperties = altinnConsumerProperties;
+        addInterceptors();
+
     }
 
     public AltinnCorrespondenceConsumerService createAltinnCorrespondenceConsumerService(){
@@ -71,7 +74,6 @@ public class AltinnConsumerFactory {
         BindingProvider bindingProvider = (BindingProvider) port;
         bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, altinnConsumerProperties.getCorrespondenceEndpointAddress());
         Client client = ClientProxy.getClient(port);
-        addInterceptors(client);
         setRequestContext(client, securityCredentials);
         return port;
     }
@@ -82,7 +84,6 @@ public class AltinnConsumerFactory {
         BindingProvider bindingProvider = (BindingProvider) port;
         bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, altinnConsumerProperties.getIntermediaryInboundEndpointAddress());
         Client client = ClientProxy.getClient(port);
-        addInterceptors(client);
         setRequestContext(client, securityCredentials);
         return port;
     }
@@ -94,14 +95,13 @@ public class AltinnConsumerFactory {
         BindingProvider bindingProvider = (BindingProvider) port;
         bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, altinnConsumerProperties.getReceipEndpointAddress());
         Client client = ClientProxy.getClient(port);
-        addInterceptors(client);
         setRequestContext(client, securityCredentials);
         return port;
     }
 
 
     private SecurityCredentials getSecurityCredentials() {
-        KeyStore keyStore = new KeyStore(altinnConsumerProperties.getAppcertKeystore(),
+        KeyStore keyStore = new KeyStore(altinnConsumerProperties.getAppcertKeystoreFilePath(),
                 altinnConsumerProperties.getAppcertKeystorealias(),
                 altinnConsumerProperties.getAppcertSecret(),
                 "jks");
@@ -147,16 +147,17 @@ public class AltinnConsumerFactory {
     }
 
     @SuppressWarnings("unchecked")
-    private void addInterceptors( Client client) {
+    private void addInterceptors() {
+        Bus bus = CXFBusFactory.getDefaultBus();
         //     LoggingFeature loggingFeature = new LoggingFeature();
         //     loggingFeature.setPrettyLogging(true);
         //     loggingFeature.initialize(bus);
         //     bus.getFeatures().add(loggingFeature);
-        client.getInInterceptors().add(new CookiesInInterceptor());
-        client.getOutInterceptors().add(new CookiesOutInterceptor());
-        client.getOutInterceptors().add(new HeaderInterceptor());
-        client.getOutInterceptors().add(getWss4JOutInterceptor());
-        client.getInFaultInterceptors().add(new BadContextTokenInFaultInterceptor());
+        bus.getInInterceptors().add(new CookiesInInterceptor());
+        bus.getOutInterceptors().add(new CookiesOutInterceptor());
+        bus.getOutInterceptors().add(new HeaderInterceptor());
+        bus.getInFaultInterceptors().add(new BadContextTokenInFaultInterceptor());
+        bus.getOutInterceptors().add(getWss4JOutInterceptor());
     }
 
     private WSS4JOutInterceptor getWss4JOutInterceptor() {
