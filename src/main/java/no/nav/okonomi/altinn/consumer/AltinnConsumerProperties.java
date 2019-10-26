@@ -6,13 +6,13 @@ public interface AltinnConsumerProperties {
 
      String getCorrespondenceEndpointAddress();
 
-     String getRf1211ServiceCode();
+     String getServiceCode();
 
-     String getRf1211ServiceEditionCode();
+     String getServiceEditionCode();
 
-     String getRf1211DataFormatId();
+     String getDataFormatId();
 
-     String getRf1211DataFormatVersion();
+     String getDataFormatVersion();
 
      String getIntermediaryInboundEndpointAddress();
 

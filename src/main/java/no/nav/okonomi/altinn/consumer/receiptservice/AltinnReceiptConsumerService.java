@@ -26,6 +26,13 @@ public class AltinnReceiptConsumerService {
         this.credentials = credentials;
         this.iReceiptExternalEC = iReceiptExternalEC;
         this.receiptService = receiptService;
+        if (credentials == null || iReceiptExternalEC == null || receiptService == null) {
+            throw new IllegalArgumentException(
+                    "credentials == " + credentials
+                            + "iReceiptExternalEC == " + iReceiptExternalEC
+                            + "receiptService == " + receiptService
+            );
+        }
     }
 
     public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) {

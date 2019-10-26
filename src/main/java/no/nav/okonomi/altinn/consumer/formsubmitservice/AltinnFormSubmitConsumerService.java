@@ -30,6 +30,13 @@ public class AltinnFormSubmitConsumerService {
         this.iIntermediaryInboundExternalEC2 = iIntermediaryInboundExternalEC2;
         this.credentials = credentials;
         this.formTaskShipmentService = formTaskShipmentService;
+        if (iIntermediaryInboundExternalEC2 == null || credentials == null || formTaskShipmentService == null) {
+            throw new IllegalArgumentException(
+                    "iIntermediaryInboundExternalEC2 == " + iIntermediaryInboundExternalEC2
+                            + " credentials == " + credentials
+                            + " formTaskShipmentService == " + formTaskShipmentService
+            );
+        }
     }
 
     public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) {

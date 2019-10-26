@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * Created by Levent Demir (Capgemini)
  */
-public class AltinnCorrespondenceConsumerService{
+public class AltinnCorrespondenceConsumerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AltinnCorrespondenceConsumerService.class);
 
@@ -32,6 +32,11 @@ public class AltinnCorrespondenceConsumerService{
 
     public AltinnCorrespondenceConsumerService(ICorrespondenceExternalEC2 iCorrespondenceExternalEC2,
                                                SecurityCredentials credentials, int languageId) {
+        if (iCorrespondenceExternalEC2 == null || credentials == null) {
+            throw new IllegalArgumentException(
+                    "ICorrespondenceExternalEC2 == " + iCorrespondenceExternalEC2
+                            + " SecurityCredentials == " + credentials);
+        }
         this.iCorrespondenceExternalEC2 = iCorrespondenceExternalEC2;
         this.credentials = credentials;
         this.languageId = languageId;
@@ -113,7 +118,7 @@ public class AltinnCorrespondenceConsumerService{
             decompressedBytes = ZipUtil.unZipByteArray(bytes);
         } else if (ZipUtil.isGzipped(bytes)) {
             decompressedBytes = ZipUtil.unGzipByteArray(bytes);
-        }else{
+        } else {
             decompressedBytes = bytes;
         }
         LOGGER.info("Meldingen med reportee element id: {}  er dekomprimert, lengde før: {} byte, lengde etter: {} byte", reporteeElementID, before, decompressedBytes != null ? decompressedBytes.length : 0);

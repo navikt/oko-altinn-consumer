@@ -10,20 +10,24 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
         return assertNotNull("altinn-consumer.correspondence.url");
     }
 
-    public String getRf1211ServiceCode() {
-        return getResultOrDefault("altinn-consumer.formsubmitservice.servicecode", "3103");
+    public String getServiceCode() {
+        return assertNotNull("altinn-consumer.formsubmitservice.servicecode");
     }
 
-    public String getRf1211ServiceEditionCode() {
-        return getResultOrDefault("altinn-consumer.formsubmitservice.serviceeditioncode","170424");
+    public String getServiceEditionCode() {
+        return assertNotNull("altinn-consumer.formsubmitservice.serviceeditioncode");
     }
 
-    public String getRf1211DataFormatId() {
-        return getResultOrDefault("altinn-consumer.formsubmitservice.dataformatid","1548");
+    public String getDataFormatId() {
+        return assertNotNull("altinn-consumer.formsubmitservice.dataformatid");
     }
 
-    public String getRf1211DataFormatVersion() {
-        return getResultOrDefault("altinn-consumer.formsubmitservice.dataformatversion","11936");
+    public String getDataFormatVersion() {
+        return assertNotNull("altinn-consumer.formsubmitservice.dataformatversion");
+    }
+
+    public String getLanguageId() {
+        return getResultOrDefault("nav.altinn-consumer.languageid","1044");
     }
 
     public String getIntermediaryInboundEndpointAddress() {
@@ -53,10 +57,6 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
 
     public String getAppcertKeystoreFilePath() {
         return assertNotNull("altinn-consumer.security.appcert.keystore");
-    }
-
-    public String getLanguageId() {
-        return getResultOrDefault("nav.altinn-consumer.languageid","1044");
     }
 
     public String getPassword() {

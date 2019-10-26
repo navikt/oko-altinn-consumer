@@ -122,10 +122,10 @@ public class AltinnConsumerFactory {
 
     private FormSubmitServiceProperties getFormSubmitServiceProperties() {
         return new FormSubmitServiceProperties(
-                altinnConsumerProperties.getRf1211ServiceCode(),
-                altinnConsumerProperties.getRf1211ServiceEditionCode(),
-                altinnConsumerProperties.getRf1211DataFormatId(),
-                altinnConsumerProperties.getRf1211DataFormatVersion());
+                altinnConsumerProperties.getServiceCode(),
+                altinnConsumerProperties.getServiceEditionCode(),
+                altinnConsumerProperties.getDataFormatId(),
+                altinnConsumerProperties.getDataFormatVersion());
     }
 
     private FormTaskService getFormTaskService(){
