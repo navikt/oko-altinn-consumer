@@ -109,7 +109,7 @@ public class AltinnConsumerFactory {
     }
 
     private ClientCallBackHandler getClientCallBackHandler() {
-        return new ClientCallBackHandler(altinnConsumerProperties.getPassword());
+        return new ClientCallBackHandler(altinnConsumerProperties.getSbsPassword());
     }
 
     private FormTaskShipmentService getFormTaskShipmentService(){
@@ -164,7 +164,7 @@ public class AltinnConsumerFactory {
         Map<String, Object> properties = new HashMap<>();
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
-        properties.put(WSHandlerConstants.USER, altinnConsumerProperties.getUserName());
+        properties.put(WSHandlerConstants.USER, altinnConsumerProperties.getSbsUserName());
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, getClientCallBackHandler());
 
         return new WSS4JOutInterceptor(properties);

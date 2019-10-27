@@ -2,7 +2,9 @@ package no.nav.okonomi.altinn.consumer;
 
 public interface AltinnConsumerProperties {
 
-     String getUserName();
+     String getSbsUserName();
+
+     String getSbsPassword();
 
      String getCorrespondenceEndpointAddress();
 
@@ -13,6 +15,8 @@ public interface AltinnConsumerProperties {
      String getDataFormatId();
 
      String getDataFormatVersion();
+
+     String getLanguageId();
 
      String getIntermediaryInboundEndpointAddress();
 
@@ -28,7 +32,6 @@ public interface AltinnConsumerProperties {
 
      String getAppcertKeystoreFilePath();
 
-     String getLanguageId();
 
-     String getPassword();
+
 }

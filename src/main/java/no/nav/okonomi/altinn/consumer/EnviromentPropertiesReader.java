@@ -2,8 +2,12 @@ package no.nav.okonomi.altinn.consumer;
 
 public class EnviromentPropertiesReader implements AltinnConsumerProperties {
 
-    public String getUserName() {
+    public String getSbsUserName() {
         return assertNotNull("altinn-consumer.srvuser-sbs.username");
+    }
+
+    public String getSbsPassword() {
+        return assertNotNull("altinn-consumer.srvuser-sbs.password");
     }
 
     public String getCorrespondenceEndpointAddress() {
@@ -57,10 +61,6 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
 
     public String getAppcertKeystoreFilePath() {
         return assertNotNull("altinn-consumer.security.appcert.keystore");
-    }
-
-    public String getPassword() {
-        return assertNotNull("altinn-consumer.srvuser-sbs.password");
     }
 
     private String assertNotNull(String envVarQuery){
