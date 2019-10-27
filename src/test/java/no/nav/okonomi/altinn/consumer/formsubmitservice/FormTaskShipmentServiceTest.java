@@ -46,10 +46,10 @@ public class FormTaskShipmentServiceTest {
 
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(message);
 
-        assertEquals(ORGNUMMER,formTaskShipment.getReportee());
-        assertEquals(ORDER_ID,formTaskShipment.getExternalShipmentReference());
-        assertEquals(formTask,formTaskShipment.getFormTasks());
-        assertEquals(arrayOfAttachment,formTaskShipment.getAttachments());
+        assertEquals(ORGNUMMER, formTaskShipment.getReportee());
+        assertEquals(ORDER_ID, formTaskShipment.getExternalShipmentReference());
+        assertEquals(formTask, formTaskShipment.getFormTasks());
+        assertEquals(arrayOfAttachment, formTaskShipment.getAttachments());
     }
 
     @Test
@@ -62,9 +62,9 @@ public class FormTaskShipmentServiceTest {
 
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(message);
 
-        assertEquals(ORGNUMMER,formTaskShipment.getReportee());
-        assertEquals(ORDER_ID,formTaskShipment.getExternalShipmentReference());
-        assertEquals(formTask,formTaskShipment.getFormTasks());
+        assertEquals(ORGNUMMER, formTaskShipment.getReportee());
+        assertEquals(ORDER_ID, formTaskShipment.getExternalShipmentReference());
+        assertEquals(formTask, formTaskShipment.getFormTasks());
         assertNull(formTaskShipment.getAttachments());
     }
 

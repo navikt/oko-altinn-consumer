@@ -85,7 +85,7 @@ public class RF1211MessageBuilder {
         }
     }
 
-    private boolean isEmpty(String toTest){
+    private boolean isEmpty(String toTest) {
         return "".equals(toTest) || toTest == null;
     }
 

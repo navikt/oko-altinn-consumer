@@ -26,10 +26,10 @@ public class ReceiptServiceTest {
 
         ReceiptSearch receiptSearch = receiptService.createReceipt(receiptId, extShipmentReference);
 
-        assertEquals(receiptId,receiptSearch.getReceiptId());
-        assertEquals(1,receiptSearch.getReferences().getValue().getReference().size());
-        assertEquals(ReferenceType.EXTERNAL_SHIPMENT_REFERENCE,receiptSearch.getReferences().getValue().getReference().get(0).getReferenceType());
-        assertEquals(extShipmentReference,receiptSearch.getReferences().getValue().getReference().get(0).getReferenceValue());
+        assertEquals(receiptId, receiptSearch.getReceiptId());
+        assertEquals(1, receiptSearch.getReferences().getValue().getReference().size());
+        assertEquals(ReferenceType.EXTERNAL_SHIPMENT_REFERENCE, receiptSearch.getReferences().getValue().getReference().get(0).getReferenceType());
+        assertEquals(extShipmentReference, receiptSearch.getReferences().getValue().getReference().get(0).getReferenceValue());
     }
 
     @Test
@@ -59,10 +59,10 @@ public class ReceiptServiceTest {
 
         SubmitFormTask returnedValue = receiptService.updateReceipt(receipt, submitFormTask);
 
-        assertEquals(RECEIPT_ID,returnedValue.getReceiptId());
-        assertEquals(EXT_SHIPMENT_REF,returnedValue.getExternalShipmentReference());
-        assertEquals(ARCHIVE_REF,returnedValue.getArchiveReference());
-        assertEquals(RECIEVER_REF,returnedValue.getReceiversReference());
+        assertEquals(RECEIPT_ID, returnedValue.getReceiptId());
+        assertEquals(EXT_SHIPMENT_REF, returnedValue.getExternalShipmentReference());
+        assertEquals(ARCHIVE_REF, returnedValue.getArchiveReference());
+        assertEquals(RECIEVER_REF, returnedValue.getReceiversReference());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ReceiptServiceTest {
                 .externalShipmentReference(EXT_SHIPMENT_REF)
                 .build();
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-        receiptService.updateReceipt(receipt, submitFormTask);
+            receiptService.updateReceipt(receipt, submitFormTask);
         });
     }
 

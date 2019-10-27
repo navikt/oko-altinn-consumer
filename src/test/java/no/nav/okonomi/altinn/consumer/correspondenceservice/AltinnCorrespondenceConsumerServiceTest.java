@@ -24,7 +24,7 @@ class AltinnCorrespondenceConsumerServiceTest {
     private static final int LANGUAGE_ID = 1044;
 
     @Mock
-    private  ICorrespondenceExternalEC2 correspondenceService;
+    private ICorrespondenceExternalEC2 correspondenceService;
 
     @Mock
     private SecurityCredentials securityCredentials;
@@ -32,14 +32,14 @@ class AltinnCorrespondenceConsumerServiceTest {
     private AltinnCorrespondenceConsumerService altinnCorrespondenceConsumerService;
 
     @BeforeEach
-    void setUp(){
-        altinnCorrespondenceConsumerService = new AltinnCorrespondenceConsumerService(correspondenceService,securityCredentials, LANGUAGE_ID);
+    void setUp() {
+        altinnCorrespondenceConsumerService = new AltinnCorrespondenceConsumerService(correspondenceService, securityCredentials, LANGUAGE_ID);
     }
 
     @Test
     void shouldReturnDocument() throws ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage, IOException {
         CorrespondenceForEndUserSystemV2 correspondenceForEndUserSystemV2 = createCorrespondenceForEndUserSystemV2();
-        when(correspondenceService.getCorrespondenceForEndUserSystemsEC(null,null,4973347,LANGUAGE_ID)).thenReturn(correspondenceForEndUserSystemV2);
+        when(correspondenceService.getCorrespondenceForEndUserSystemsEC(null, null, 4973347, LANGUAGE_ID)).thenReturn(correspondenceForEndUserSystemV2);
 
         SubmitFormTask sft = new SubmitFormTask(11663407, "90f70a46-cb4e-4dcc-9138-45bc3fdf8f91", "AR3697057", "4973347");
         Document document = altinnCorrespondenceConsumerService.retrieveDocument(sft);

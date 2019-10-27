@@ -32,13 +32,13 @@ public class FormTaskServiceTest {
     public void createFormTask() {
         formTaskService = new FormTaskService(new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION));
         FormTask formTask = formTaskService.createFormTask(stubMessage());
-        assertEquals( 1,formTask.getForms().getForm().size());
-        assertEquals(SERVICE_CODE,formTask.getServiceCode());
-        assertEquals(Integer.parseInt(SERVICE_EDITION_CODE),formTask.getServiceEdition());
-        assertEquals(DATA_FORMAT_ID,formTask.getForms().getForm().get(0).getDataFormatId());
-        assertEquals(Integer.parseInt(DATA_FORMAT_VERSION),formTask.getForms().getForm().get(0).getDataFormatVersion());
-        assertEquals(ORDER_ID,formTask.getForms().getForm().get(0).getEndUserSystemReference());
-        assertEquals( 0,formTask.getForms().getForm().get(0).getParentReference());
+        assertEquals(1, formTask.getForms().getForm().size());
+        assertEquals(SERVICE_CODE, formTask.getServiceCode());
+        assertEquals(Integer.parseInt(SERVICE_EDITION_CODE), formTask.getServiceEdition());
+        assertEquals(DATA_FORMAT_ID, formTask.getForms().getForm().get(0).getDataFormatId());
+        assertEquals(Integer.parseInt(DATA_FORMAT_VERSION), formTask.getForms().getForm().get(0).getDataFormatVersion());
+        assertEquals(ORDER_ID, formTask.getForms().getForm().get(0).getEndUserSystemReference());
+        assertEquals(0, formTask.getForms().getForm().get(0).getParentReference());
     }
 
     private RF1211MessageVO stubMessage() {

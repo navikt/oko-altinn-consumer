@@ -33,39 +33,39 @@ public class AltinnConsumerFactory {
 
     private final AltinnConsumerProperties altinnConsumerProperties;
 
-    public AltinnConsumerFactory(){
+    public AltinnConsumerFactory() {
         this.altinnConsumerProperties = new EnviromentPropertiesReader();
         addInterceptors();
 
     }
 
-    public AltinnConsumerFactory(AltinnConsumerProperties altinnConsumerProperties){
+    public AltinnConsumerFactory(AltinnConsumerProperties altinnConsumerProperties) {
         this.altinnConsumerProperties = altinnConsumerProperties;
         addInterceptors();
 
     }
 
-    public AltinnCorrespondenceConsumerService createAltinnCorrespondenceConsumerService(){
+    public AltinnCorrespondenceConsumerService createAltinnCorrespondenceConsumerService() {
 
         return new AltinnCorrespondenceConsumerService(
-                        getICorrespondenceExternalEC2(getSecurityCredentials()),
-                        getSecurityCredentials(),
+                getICorrespondenceExternalEC2(getSecurityCredentials()),
+                getSecurityCredentials(),
                 Integer.parseInt(altinnConsumerProperties.getLanguageId()));
     }
 
-    public AltinnFormSubmitConsumerService createAltinnFormSubmitConsumerService(){
+    public AltinnFormSubmitConsumerService createAltinnFormSubmitConsumerService() {
 
         return new AltinnFormSubmitConsumerService(
-                        getIIntermediaryInboundExternalEC2(getSecurityCredentials()),
-                        getSecurityCredentials(),
-                        getFormTaskShipmentService());
+                getIIntermediaryInboundExternalEC2(getSecurityCredentials()),
+                getSecurityCredentials(),
+                getFormTaskShipmentService());
     }
 
-    public AltinnReceiptConsumerService createltinnReceiptConsumerService(){
+    public AltinnReceiptConsumerService createltinnReceiptConsumerService() {
 
         return new AltinnReceiptConsumerService(getIReceiptExternalEC2(getSecurityCredentials()),
-                        getSecurityCredentials(),
-                        getReceiptService());
+                getSecurityCredentials(),
+                getReceiptService());
     }
 
     private ICorrespondenceExternalEC2 getICorrespondenceExternalEC2(SecurityCredentials securityCredentials) {
@@ -112,11 +112,11 @@ public class AltinnConsumerFactory {
         return new ClientCallBackHandler(altinnConsumerProperties.getSbsPassword());
     }
 
-    private FormTaskShipmentService getFormTaskShipmentService(){
-        return new FormTaskShipmentService(getAttachmentService(),getFormTaskService());
+    private FormTaskShipmentService getFormTaskShipmentService() {
+        return new FormTaskShipmentService(getAttachmentService(), getFormTaskService());
     }
 
-    private AttachmentService getAttachmentService(){
+    private AttachmentService getAttachmentService() {
         return new AttachmentService();
     }
 
@@ -128,11 +128,11 @@ public class AltinnConsumerFactory {
                 altinnConsumerProperties.getDataFormatVersion());
     }
 
-    private FormTaskService getFormTaskService(){
+    private FormTaskService getFormTaskService() {
         return new FormTaskService(getFormSubmitServiceProperties());
     }
 
-    private ReceiptService getReceiptService(){
+    private ReceiptService getReceiptService() {
         return new ReceiptService();
     }
 

@@ -17,9 +17,9 @@ public final class SubmitFormTask {
     private String externalShipmentReference;
 
     public SubmitFormTask(Integer receiptId,
-                   String externalShipmentReference,
-                   String archiveReference,
-                   String receiversReference) {
+                          String externalShipmentReference,
+                          String archiveReference,
+                          String receiversReference) {
         this.receiptId = receiptId;
         this.externalShipmentReference = externalShipmentReference;
         this.archiveReference = archiveReference;

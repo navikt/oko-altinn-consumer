@@ -2,36 +2,35 @@ package no.nav.okonomi.altinn.consumer;
 
 public interface AltinnConsumerProperties {
 
-     String getSbsUserName();
+    String getSbsUserName();
 
-     String getSbsPassword();
+    String getSbsPassword();
 
-     String getCorrespondenceEndpointAddress();
+    String getCorrespondenceEndpointAddress();
 
-     String getServiceCode();
+    String getServiceCode();
 
-     String getServiceEditionCode();
+    String getServiceEditionCode();
 
-     String getDataFormatId();
+    String getDataFormatId();
 
-     String getDataFormatVersion();
+    String getDataFormatVersion();
 
-     String getLanguageId();
+    String getLanguageId();
 
-     String getIntermediaryInboundEndpointAddress();
+    String getIntermediaryInboundEndpointAddress();
 
-     String getReceipEndpointAddress();
+    String getReceipEndpointAddress();
 
-     String getVirksomhetUserName();
+    String getVirksomhetUserName();
 
-     String getVirksomhetPassord();
+    String getVirksomhetPassord();
 
-     String getAppcertKeystorealias();
+    String getAppcertKeystorealias();
 
-     String getAppcertSecret();
+    String getAppcertSecret();
 
-     String getAppcertKeystoreFilePath();
-
+    String getAppcertKeystoreFilePath();
 
 
 }

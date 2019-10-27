@@ -40,13 +40,13 @@ class AltinnReceiptConsumerServiceTest {
     @Test
     void getReceiptWithSubmitForm() throws IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage {
         Receipt receipt = getReceipt();
-        when(iReceiptExternalEC.getReceiptECV2(any(),any(),any())).thenReturn(receipt);
+        when(iReceiptExternalEC.getReceiptECV2(any(), any(), any())).thenReturn(receipt);
         SubmitFormTask sft = new SubmitFormTaskBuilder()
-                    .receipdId(11663407)
-                    .externalShipmentReference("90f70a46-cb4e-4dcc-9138-45bc3fdf8f91")
-                    .build();
-            sft = altinnReceiptConsumerService.getReceiptWithSubmitForm(sft);
-            assertNotNull(sft);
+                .receipdId(11663407)
+                .externalShipmentReference("90f70a46-cb4e-4dcc-9138-45bc3fdf8f91")
+                .build();
+        sft = altinnReceiptConsumerService.getReceiptWithSubmitForm(sft);
+        assertNotNull(sft);
     }
 
     private Receipt getReceipt() {

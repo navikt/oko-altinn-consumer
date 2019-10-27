@@ -31,7 +31,7 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
     }
 
     public String getLanguageId() {
-        return getResultOrDefault("nav.altinn-consumer.languageid","1044");
+        return getResultOrDefault("nav.altinn-consumer.languageid", "1044");
     }
 
     public String getIntermediaryInboundEndpointAddress() {
@@ -63,13 +63,13 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
         return assertNotNull("altinn-consumer.security.appcert.keystore");
     }
 
-    private String assertNotNull(String envVarQuery){
+    private String assertNotNull(String envVarQuery) {
         String envVarResult = System.getenv(envVarQuery);
-        if(envVarResult == null) throw new AltinnConsumerException("Missing environment variable " + envVarQuery);
+        if (envVarResult == null) throw new AltinnConsumerException("Missing environment variable " + envVarQuery);
         return envVarResult;
     }
 
-    private String getResultOrDefault(String envVarQuery, String defaultValue){
+    private String getResultOrDefault(String envVarQuery, String defaultValue) {
         String envVarResult = System.getenv(envVarQuery);
         return envVarResult != null ? envVarResult : defaultValue;
     }

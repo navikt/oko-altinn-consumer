@@ -44,21 +44,21 @@ class AltinnFormSubmitConsumerServiceTest {
 
     @Test
     void submitForm() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage {
-        when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(),any(),any())).thenReturn(getReceiptExternalBE());
+        when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(), any(), any())).thenReturn(getReceiptExternalBE());
         SubmitFormTask submitFormTask = altinnFormSubmitConsumerService.submitForm(stubMessage());
 
-        assertEquals(REFERENCE_VALUE,submitFormTask.getReceiversReference());
+        assertEquals(REFERENCE_VALUE, submitFormTask.getReceiversReference());
         assertEquals(ORDER_ID, submitFormTask.getExternalShipmentReference());
-        assertEquals(RECEIPT_ID,submitFormTask.getReceiptId());
+        assertEquals(RECEIPT_ID, submitFormTask.getReceiptId());
     }
 
     @Test
     void submitFormWithoutAttachment() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage {
-        when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(),any(),any())).thenReturn(getReceiptExternalBE());
+        when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(), any(), any())).thenReturn(getReceiptExternalBE());
         SubmitFormTask submitFormTask = altinnFormSubmitConsumerService.submitFormWithoutAttachment(stubMessage());
-        assertEquals(REFERENCE_VALUE,submitFormTask.getReceiversReference());
+        assertEquals(REFERENCE_VALUE, submitFormTask.getReceiversReference());
         assertEquals(ORDER_ID, submitFormTask.getExternalShipmentReference());
-        assertEquals(RECEIPT_ID,submitFormTask.getReceiptId());
+        assertEquals(RECEIPT_ID, submitFormTask.getReceiptId());
     }
 
     private ReceiptExternalBE getReceiptExternalBE() {

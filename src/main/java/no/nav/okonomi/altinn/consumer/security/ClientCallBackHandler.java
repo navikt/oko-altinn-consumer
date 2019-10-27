@@ -9,7 +9,7 @@ public class ClientCallBackHandler implements CallbackHandler {
 
     private String password;
 
-    public ClientCallBackHandler (String password){
+    public ClientCallBackHandler(String password) {
         this.password = password;
     }
 
