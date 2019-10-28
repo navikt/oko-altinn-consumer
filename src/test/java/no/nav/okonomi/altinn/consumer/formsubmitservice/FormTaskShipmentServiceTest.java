@@ -20,10 +20,7 @@ public class FormTaskShipmentServiceTest {
 
     private static final String ORDER_ID = "orderId";
     private static final String ORGNUMMER = "orgnummer";
-    private static final String NAVN = "navn";
-    private static final String INNTEKTSAAR = "2017";
     private static final byte[] VEDLEGG = {1, 2, 3};
-    private static final String SIDEN_DATO = "sidenDato";
 
     @InjectMocks
     private FormTaskShipmentService formTaskShipmentService;
@@ -39,7 +36,7 @@ public class FormTaskShipmentServiceTest {
         FormTask formTask = new FormTask();
         ArrayOfAttachment arrayOfAttachment = new ArrayOfAttachment();
 
-        RF1211MessageVO message = stubMessage();
+        RFMessageStub message = stubMessage();
 
         when(formTaskService.createFormTask(message)).thenReturn(formTask);
         when(attachmentService.createAttachment(anyString(), any(byte[].class), anyString())).thenReturn(arrayOfAttachment);
@@ -56,7 +53,7 @@ public class FormTaskShipmentServiceTest {
     public void createFormTaskShipmentWithoutAttachments() {
         FormTask formTask = new FormTask();
 
-        RF1211MessageVO message = stubMessage();
+        RFMessageStub message = stubMessage();
 
         when(formTaskService.createFormTask(message)).thenReturn(formTask);
 
@@ -68,18 +65,9 @@ public class FormTaskShipmentServiceTest {
         assertNull(formTaskShipment.getAttachments());
     }
 
-    private RF1211MessageVO stubMessage() {
-        return new RF1211MessageBuilder()
-                .orderId(ORDER_ID)
-                .orgnummer(ORGNUMMER)
-                .navn(NAVN)
-                .inntektsaar(INNTEKTSAAR)
-                .vedlegg(VEDLEGG)
-                .skattekortVarslingstype(SkattekortVarslingstype.VARSEL_VED_FOERSTE_SKATTEKORTENDRING)
-                .skattekortMeldingstype(SkattekortMeldingstype.INNSENDING_MED_VEDLEGG_OG_EVT_ENDRINGER)
-                .skattekortHenteEndredeSkattekort(SkattekortHenteEndredeSkattekort.SIDEN_SISTE_FORESPOERSEL)
-                .sidenDato(SIDEN_DATO)
-                .build();
+    //todo formdata test
+    private RFMessageStub stubMessage() {
+        return new RFMessageStub(ORDER_ID, ORGNUMMER, null, VEDLEGG);
     }
 
 }

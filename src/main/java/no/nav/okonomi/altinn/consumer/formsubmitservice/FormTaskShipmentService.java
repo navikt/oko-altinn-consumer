@@ -16,6 +16,7 @@ public class FormTaskShipmentService {
         objectFactory = new ObjectFactory();
     }
 
+    //TODO hvorfor eksisterer formTaskService og attachmentService ?????????????????????????????
     FormTaskShipmentBE createFormTaskShipment(AltinnMessage altinnMessage) {
         FormTaskShipmentBE formTaskShipment = objectFactory.createFormTaskShipmentBE();
         formTaskShipment.setReportee(altinnMessage.getOrgnummer());

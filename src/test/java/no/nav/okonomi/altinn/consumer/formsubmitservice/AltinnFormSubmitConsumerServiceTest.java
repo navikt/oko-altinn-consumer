@@ -23,12 +23,9 @@ class AltinnFormSubmitConsumerServiceTest {
 
     private static final String ORDER_ID = "orderId";
     private static final String ORGNUMMER = "orgnummer";
-    private static final String NAVN = "navn";
-    private static final String INNTEKTSAAR = "2017";
     private static final byte[] VEDLEGG = {1, 2, 3};
-    private static final String SIDEN_DATO = "sidenDato";
-    public static final String REFERENCE_VALUE = "test";
-    public static final int RECEIPT_ID = 123;
+    private static final String REFERENCE_VALUE = "test";
+    private static final int RECEIPT_ID = 123;
 
     @Mock
     private SecurityCredentials credentials;
@@ -75,17 +72,8 @@ class AltinnFormSubmitConsumerServiceTest {
         return receiptExternalBE;
     }
 
-    private RF1211MessageVO stubMessage() {
-        return new RF1211MessageBuilder()
-                .orderId(ORDER_ID)
-                .orgnummer(ORGNUMMER)
-                .navn(NAVN)
-                .inntektsaar(INNTEKTSAAR)
-                .vedlegg(VEDLEGG)
-                .skattekortVarslingstype(SkattekortVarslingstype.VARSEL_VED_FOERSTE_SKATTEKORTENDRING)
-                .skattekortMeldingstype(SkattekortMeldingstype.INNSENDING_MED_VEDLEGG_OG_EVT_ENDRINGER)
-                .skattekortHenteEndredeSkattekort(SkattekortHenteEndredeSkattekort.SIDEN_SISTE_FORESPOERSEL)
-                .sidenDato(SIDEN_DATO)
-                .build();
+    //todo formData test
+    private RFMessageStub stubMessage() {
+        return new RFMessageStub(ORDER_ID, ORGNUMMER, null, VEDLEGG);
     }
 }
