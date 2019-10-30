@@ -113,11 +113,7 @@ public class AltinnConsumerFactory {
     }
 
     private FormTaskShipmentService getFormTaskShipmentService() {
-        return new FormTaskShipmentService(getAttachmentService(), getFormTaskService());
-    }
-
-    private AttachmentService getAttachmentService() {
-        return new AttachmentService();
+        return new FormTaskShipmentService(getFormSubmitServiceProperties());
     }
 
     private FormSubmitServiceProperties getFormSubmitServiceProperties() {
@@ -126,10 +122,6 @@ public class AltinnConsumerFactory {
                 altinnConsumerProperties.getServiceEditionCode(),
                 altinnConsumerProperties.getDataFormatId(),
                 altinnConsumerProperties.getDataFormatVersion());
-    }
-
-    private FormTaskService getFormTaskService() {
-        return new FormTaskService(getFormSubmitServiceProperties());
     }
 
     private ReceiptService getReceiptService() {

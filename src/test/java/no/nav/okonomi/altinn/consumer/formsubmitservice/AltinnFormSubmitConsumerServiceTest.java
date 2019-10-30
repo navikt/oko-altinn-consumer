@@ -26,6 +26,7 @@ class AltinnFormSubmitConsumerServiceTest {
     private static final byte[] VEDLEGG = {1, 2, 3};
     private static final String REFERENCE_VALUE = "test";
     private static final int RECEIPT_ID = 123;
+    private static final String FORM_DATA = "formData";
 
     @Mock
     private SecurityCredentials credentials;
@@ -34,7 +35,7 @@ class AltinnFormSubmitConsumerServiceTest {
     private IIntermediaryInboundExternalEC2 iIntermediaryInboundExternalEC2;
 
     @Spy
-    private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(new AttachmentService(), new FormTaskService(new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION)));
+    private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION));
 
     @InjectMocks
     private AltinnFormSubmitConsumerService altinnFormSubmitConsumerService;
@@ -72,8 +73,7 @@ class AltinnFormSubmitConsumerServiceTest {
         return receiptExternalBE;
     }
 
-    //todo formData test
     private RFMessageStub stubMessage() {
-        return new RFMessageStub(ORDER_ID, ORGNUMMER, null, VEDLEGG);
+        return new RFMessageStub(ORDER_ID, ORGNUMMER, FORM_DATA, VEDLEGG);
     }
 }
