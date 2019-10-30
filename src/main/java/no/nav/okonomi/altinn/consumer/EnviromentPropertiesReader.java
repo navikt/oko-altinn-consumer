@@ -10,10 +10,6 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
         return getEnvVar("altinn-consumer.srvuser-sbs.password");
     }
 
-    public String getCorrespondenceEndpointAddress() {
-        return getEnvVar("altinn-consumer.correspondence.url");
-    }
-
     public String getServiceCode() {
         return getEnvVar("altinn-consumer.formsubmitservice.servicecode");
     }
@@ -31,7 +27,11 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
     }
 
     public String getLanguageId() {
-        return getEnvVarOrDefault("nav.altinn-consumer.languageid", "1044");
+        return getEnvVarOrDefault("altinn-consumer.languageid", "1044");
+    }
+
+    public String getCorrespondenceEndpointAddress() {
+        return getEnvVar("altinn-consumer.correspondence.url");
     }
 
     public String getIntermediaryInboundEndpointAddress() {
