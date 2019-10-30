@@ -34,7 +34,7 @@ altinn-consumer.security.appcert.keystore
 #### Code/project related questions can be sent to 
 * Helge Eriken, `Helge.Eriksen@nav.no`
 * Magnar Brandsdal, `Magnar.Brandsdal@nav.no`
-* Ken Dahle, `Ken.Dahlen@nav.no`
+* Ken Dahle, `Ken.Dahle@nav.no`
 
 #### For NAV employees
 We're available on Slack in the channel #tøb for any inquiries.
