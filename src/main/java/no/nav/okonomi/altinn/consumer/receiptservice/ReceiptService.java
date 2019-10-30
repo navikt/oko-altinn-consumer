@@ -2,7 +2,11 @@ package no.nav.okonomi.altinn.consumer.receiptservice;
 
 import no.altinn.receiptexternalec.ReceiptStatusEnum;
 import no.altinn.receiptexternalec.ReferenceType;
-import no.altinn.receiptexternalec.v201506.*;
+import no.altinn.receiptexternalec.v201506.ObjectFactory;
+import no.altinn.receiptexternalec.v201506.Receipt;
+import no.altinn.receiptexternalec.v201506.ReceiptSearch;
+import no.altinn.receiptexternalec.v201506.Reference;
+import no.altinn.receiptexternalec.v201506.ReferenceList;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

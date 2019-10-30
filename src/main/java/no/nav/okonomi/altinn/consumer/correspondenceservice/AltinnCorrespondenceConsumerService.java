@@ -1,6 +1,13 @@
 package no.nav.okonomi.altinn.consumer.correspondenceservice;
 
-import no.altinn.correspondenceexternalec.*;
+import no.altinn.correspondenceexternalec.AltinnFault;
+import no.altinn.correspondenceexternalec.AttachmentBEV2;
+import no.altinn.correspondenceexternalec.AttachmentBEV2List;
+import no.altinn.correspondenceexternalec.AttachmentType;
+import no.altinn.correspondenceexternalec.CorrespondenceForEndUserSystemV2;
+import no.altinn.correspondenceexternalec.CorrespondenceV2;
+import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2;
+import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import no.nav.okonomi.altinn.consumer.utility.XMLUtil;
@@ -13,6 +20,7 @@ import org.xml.sax.SAXException;
 import javax.xml.bind.JAXBElement;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -31,14 +39,11 @@ public class AltinnCorrespondenceConsumerService {
     private SecurityCredentials credentials;
 
     public AltinnCorrespondenceConsumerService(ICorrespondenceExternalEC2 iCorrespondenceExternalEC2,
-                                               SecurityCredentials credentials, int languageId) {
-        if (iCorrespondenceExternalEC2 == null || credentials == null) {
-            throw new IllegalArgumentException(
-                    "ICorrespondenceExternalEC2 == " + iCorrespondenceExternalEC2
-                            + " SecurityCredentials == " + credentials);
-        }
+                                               SecurityCredentials securityCredentials, int languageId) {
+        Objects.requireNonNull(iCorrespondenceExternalEC2, "iCorrespondenceExternalEC2 must not be null");
+        Objects.requireNonNull(securityCredentials, "securityCredentials must not be null");
         this.iCorrespondenceExternalEC2 = iCorrespondenceExternalEC2;
-        this.credentials = credentials;
+        this.credentials = securityCredentials;
         this.languageId = languageId;
     }
 

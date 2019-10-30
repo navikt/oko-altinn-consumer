@@ -1,6 +1,13 @@
 package no.nav.okonomi.altinn.consumer.correspondenceservice;
 
-import no.altinn.correspondenceexternalec.*;
+import no.altinn.correspondenceexternalec.AttachmentBEV2;
+import no.altinn.correspondenceexternalec.AttachmentBEV2List;
+import no.altinn.correspondenceexternalec.AttachmentType;
+import no.altinn.correspondenceexternalec.CorrespondenceForEndUserSystemV2;
+import no.altinn.correspondenceexternalec.CorrespondenceV2;
+import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2;
+import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage;
+import no.altinn.correspondenceexternalec.ObjectFactory;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.commons.io.IOUtils;

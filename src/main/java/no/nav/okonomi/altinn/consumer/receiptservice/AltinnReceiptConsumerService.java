@@ -9,6 +9,8 @@ import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 /**
  * Created by Levent Demir (Capgemini)
  */
@@ -21,18 +23,14 @@ public class AltinnReceiptConsumerService {
     private ReceiptService receiptService;
 
     public AltinnReceiptConsumerService(IReceiptExternalEC2 iReceiptExternalEC,
-                                        SecurityCredentials credentials,
+                                        SecurityCredentials securityCredentials,
                                         ReceiptService receiptService) {
-        this.credentials = credentials;
+        Objects.requireNonNull(iReceiptExternalEC, "iReceiptExternalEC must not be null");
+        Objects.requireNonNull(securityCredentials, "securityCredentials must not be null");
+        Objects.requireNonNull(receiptService, "receiptService must not be null");
+        this.credentials = securityCredentials;
         this.iReceiptExternalEC = iReceiptExternalEC;
         this.receiptService = receiptService;
-        if (credentials == null || iReceiptExternalEC == null || receiptService == null) {
-            throw new IllegalArgumentException(
-                    "credentials == " + credentials
-                            + "iReceiptExternalEC == " + iReceiptExternalEC
-                            + "receiptService == " + receiptService
-            );
-        }
     }
 
     public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) {

@@ -3,77 +3,77 @@ package no.nav.okonomi.altinn.consumer;
 public class EnviromentPropertiesReader implements AltinnConsumerProperties {
 
     public String getSbsUserName() {
-        return assertNotNull("altinn-consumer.srvuser-sbs.username");
+        return getEnvVar("altinn-consumer.srvuser-sbs.username");
     }
 
     public String getSbsPassword() {
-        return assertNotNull("altinn-consumer.srvuser-sbs.password");
+        return getEnvVar("altinn-consumer.srvuser-sbs.password");
     }
 
     public String getCorrespondenceEndpointAddress() {
-        return assertNotNull("altinn-consumer.correspondence.url");
+        return getEnvVar("altinn-consumer.correspondence.url");
     }
 
     public String getServiceCode() {
-        return assertNotNull("altinn-consumer.formsubmitservice.servicecode");
+        return getEnvVar("altinn-consumer.formsubmitservice.servicecode");
     }
 
     public String getServiceEditionCode() {
-        return assertNotNull("altinn-consumer.formsubmitservice.serviceeditioncode");
+        return getEnvVar("altinn-consumer.formsubmitservice.serviceeditioncode");
     }
 
     public String getDataFormatId() {
-        return assertNotNull("altinn-consumer.formsubmitservice.dataformatid");
+        return getEnvVar("altinn-consumer.formsubmitservice.dataformatid");
     }
 
     public String getDataFormatVersion() {
-        return assertNotNull("altinn-consumer.formsubmitservice.dataformatversion");
+        return getEnvVar("altinn-consumer.formsubmitservice.dataformatversion");
     }
 
     public String getLanguageId() {
-        return getResultOrDefault("nav.altinn-consumer.languageid", "1044");
+        return getEnvVarOrDefault("nav.altinn-consumer.languageid", "1044");
     }
 
     public String getIntermediaryInboundEndpointAddress() {
-        return assertNotNull("altinn-consumer.intermediaryinbound.url");
+        return getEnvVar("altinn-consumer.intermediaryinbound.url");
     }
 
     public String getReceipEndpointAddress() {
-        return assertNotNull("altinn-consumer.receipt.url");
+        return getEnvVar("altinn-consumer.receipt.url");
     }
 
 
     public String getVirksomhetUserName() {
-        return assertNotNull("altinn-consumer.virksomhet.username");
+        return getEnvVar("altinn-consumer.virksomhet.username");
     }
 
     public String getVirksomhetPassord() {
-        return assertNotNull("altinn-consumer.virksomhet.password");
+        return getEnvVar("altinn-consumer.virksomhet.password");
     }
 
     public String getAppcertKeystorealias() {
-        return assertNotNull("altinn-consumer.security.appcert.keystorealias");
+        return getEnvVar("altinn-consumer.security.appcert.keystorealias");
     }
 
     public String getAppcertKeystoreType() {
-        return getResultOrDefault("altinn-consumer.security.appcert.keystoreType", "JKS");
+        return getEnvVarOrDefault("altinn-consumer.security.appcert.keystoreType", "JKS");
     }
 
     public String getAppcertSecret() {
-        return assertNotNull("altinn-consumer.security.appcert.password");
+        return getEnvVar("altinn-consumer.security.appcert.password");
     }
 
     public String getAppcertKeystoreFilePath() {
-        return assertNotNull("altinn-consumer.security.appcert.keystore");
+        return getEnvVar("altinn-consumer.security.appcert.keystore");
     }
 
-    private String assertNotNull(String envVarQuery) {
+    private String getEnvVar(String envVarQuery) {
         String envVarResult = System.getenv(envVarQuery);
         if (envVarResult == null) throw new AltinnConsumerException("Missing environment variable " + envVarQuery);
         return envVarResult;
     }
 
-    private String getResultOrDefault(String envVarQuery, String defaultValue) {
+    private String getEnvVarOrDefault(String envVarQuery, String defaultValue) {
         String envVarResult = System.getenv(envVarQuery);
         return envVarResult != null ? envVarResult : defaultValue;
     }

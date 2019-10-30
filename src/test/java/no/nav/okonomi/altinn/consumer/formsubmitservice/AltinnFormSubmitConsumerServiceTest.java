@@ -1,6 +1,13 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
-import no.altinn.intermediaryinboundexternalec.*;
+import no.altinn.intermediaryinboundexternalec.ArrayOfReferenceExternalBE;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage;
+import no.altinn.intermediaryinboundexternalec.ObjectFactory;
+import no.altinn.intermediaryinboundexternalec.ReceiptExternalBE;
+import no.altinn.intermediaryinboundexternalec.ReceiptStatusExternal;
+import no.altinn.intermediaryinboundexternalec.ReferenceExternalBE;
+import no.altinn.intermediaryinboundexternalec.ReferenceTypeExternal;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.junit.jupiter.api.Test;
@@ -10,8 +17,9 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AltinnFormSubmitConsumerServiceTest {

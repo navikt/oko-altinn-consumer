@@ -7,7 +7,9 @@ import no.altinn.intermediaryinboundexternalec.IntermediaryInboundExternalEC2;
 import no.altinn.receiptexternalec.IReceiptExternalEC2;
 import no.altinn.receiptexternalec.ReceiptExternalEC2;
 import no.nav.okonomi.altinn.consumer.correspondenceservice.AltinnCorrespondenceConsumerService;
-import no.nav.okonomi.altinn.consumer.formsubmitservice.*;
+import no.nav.okonomi.altinn.consumer.formsubmitservice.AltinnFormSubmitConsumerService;
+import no.nav.okonomi.altinn.consumer.formsubmitservice.FormSubmitServiceProperties;
+import no.nav.okonomi.altinn.consumer.formsubmitservice.FormTaskShipmentService;
 import no.nav.okonomi.altinn.consumer.interceptor.BadContextTokenInFaultInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.CookiesInInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.CookiesOutInterceptor;
@@ -28,6 +30,7 @@ import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import javax.xml.ws.BindingProvider;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AltinnConsumerFactory {
 
@@ -40,6 +43,7 @@ public class AltinnConsumerFactory {
     }
 
     public AltinnConsumerFactory(AltinnConsumerProperties altinnConsumerProperties) {
+        Objects.requireNonNull(altinnConsumerProperties, "altinnConsumerProperties must not be null");
         this.altinnConsumerProperties = altinnConsumerProperties;
         addInterceptors();
 

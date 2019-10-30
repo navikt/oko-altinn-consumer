@@ -1,6 +1,13 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
-import no.altinn.intermediaryinboundexternalec.*;
+import no.altinn.intermediaryinboundexternalec.AltinnFault;
+import no.altinn.intermediaryinboundexternalec.FormTaskShipmentBE;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage;
+import no.altinn.intermediaryinboundexternalec.ReceiptExternalBE;
+import no.altinn.intermediaryinboundexternalec.ReceiptStatusExternal;
+import no.altinn.intermediaryinboundexternalec.ReferenceExternalBE;
+import no.altinn.intermediaryinboundexternalec.ReferenceTypeExternal;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
@@ -8,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXB;
 import java.io.StringWriter;
+import java.util.Objects;
 
 /**
  * Created by Levent Demir (Capgemini)
@@ -25,18 +33,14 @@ public class AltinnFormSubmitConsumerService {
     private FormTaskShipmentService formTaskShipmentService;
 
     public AltinnFormSubmitConsumerService(IIntermediaryInboundExternalEC2 iIntermediaryInboundExternalEC2,
-                                           SecurityCredentials credentials,
+                                           SecurityCredentials securityCredentials,
                                            FormTaskShipmentService formTaskShipmentService) {
+        Objects.requireNonNull(iIntermediaryInboundExternalEC2, "iIntermediaryInboundExternalEC2 must not be null");
+        Objects.requireNonNull(securityCredentials, "securityCredentials must not be null");
+        Objects.requireNonNull(formTaskShipmentService, "formTaskShipmentService must not be null");
         this.iIntermediaryInboundExternalEC2 = iIntermediaryInboundExternalEC2;
-        this.credentials = credentials;
+        this.credentials = securityCredentials;
         this.formTaskShipmentService = formTaskShipmentService;
-        if (iIntermediaryInboundExternalEC2 == null || credentials == null || formTaskShipmentService == null) {
-            throw new IllegalArgumentException(
-                    "iIntermediaryInboundExternalEC2 == " + iIntermediaryInboundExternalEC2
-                            + " credentials == " + credentials
-                            + " formTaskShipmentService == " + formTaskShipmentService
-            );
-        }
     }
 
     public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) {

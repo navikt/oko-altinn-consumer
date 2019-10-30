@@ -1,10 +1,17 @@
 package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
-import no.altinn.intermediaryinboundexternalec.*;
+import no.altinn.intermediaryinboundexternalec.ArrayOfAttachment;
+import no.altinn.intermediaryinboundexternalec.ArrayOfForm;
+import no.altinn.intermediaryinboundexternalec.Attachment;
+import no.altinn.intermediaryinboundexternalec.Form;
+import no.altinn.intermediaryinboundexternalec.FormTask;
+import no.altinn.intermediaryinboundexternalec.FormTaskShipmentBE;
+import no.altinn.intermediaryinboundexternalec.ObjectFactory;
 import no.nav.okonomi.altinn.consumer.utility.ByteUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class FormTaskShipmentService {
 
@@ -13,6 +20,7 @@ public class FormTaskShipmentService {
 
     public FormTaskShipmentService(FormSubmitServiceProperties formSubmitServiceProps) {
         this.formSubmitServiceProps = formSubmitServiceProps;
+        Objects.requireNonNull(formSubmitServiceProps, "formSubmitServiceProps must not be null");
         objectFactory = new ObjectFactory();
     }
 
