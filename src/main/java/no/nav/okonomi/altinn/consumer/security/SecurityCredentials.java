@@ -17,11 +17,6 @@ public class SecurityCredentials {
 
     private String virksomhetsbrukerPassord;
 
-
-    public SecurityCredentials() {
-        super();
-    }
-
     /**
      * Constructor.
      *
@@ -41,24 +36,6 @@ public class SecurityCredentials {
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.type", keyStore.getType());
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.private.password", keyStore.getSecret());
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.alias", keyStore.getKeystorealias());
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param virksomhetsbruker        Brukernavn for virksomhetsbruker
-     * @param virksomhetsbrukerPassord Passord for virksomhetsbruker
-     * @param securityFile             Applikasjons sertifikat (format PKCS12)
-     * @param securityPassword         Passord tilhørende sertifikat
-     * @param securityAlias            Alias tilhørende sertifikat (aka. friendly name)
-     */
-    public SecurityCredentials(String virksomhetsbruker,
-                               String virksomhetsbrukerPassord,
-                               String securityFile,
-                               String securityPassword,
-                               String securityAlias) {
-        this(virksomhetsbruker, virksomhetsbrukerPassord,
-                new KeyStore(securityFile, securityPassword, securityAlias, "pkcs12"));
     }
 
     public KeyStore getKeyStore() {

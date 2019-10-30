@@ -6,8 +6,6 @@ public interface AltinnConsumerProperties {
 
     String getSbsPassword();
 
-    String getCorrespondenceEndpointAddress();
-
     String getServiceCode();
 
     String getServiceEditionCode();
@@ -18,6 +16,8 @@ public interface AltinnConsumerProperties {
 
     String getLanguageId();
 
+    String getCorrespondenceEndpointAddress();
+
     String getIntermediaryInboundEndpointAddress();
 
     String getReceipEndpointAddress();
@@ -27,6 +27,8 @@ public interface AltinnConsumerProperties {
     String getVirksomhetPassord();
 
     String getAppcertKeystorealias();
+
+    String getAppcertKeystoreType();
 
     String getAppcertSecret();
 

@@ -55,6 +55,10 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
         return assertNotNull("altinn-consumer.security.appcert.keystorealias");
     }
 
+    public String getAppcertKeystoreType() {
+        return getResultOrDefault("altinn-consumer.security.appcert.keystoreType", "JKS");
+    }
+
     public String getAppcertSecret() {
         return assertNotNull("altinn-consumer.security.appcert.password");
     }

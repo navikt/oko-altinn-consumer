@@ -104,7 +104,7 @@ public class AltinnConsumerFactory {
         KeyStore keyStore = new KeyStore(altinnConsumerProperties.getAppcertKeystoreFilePath(),
                 altinnConsumerProperties.getAppcertKeystorealias(),
                 altinnConsumerProperties.getAppcertSecret(),
-                "jks");
+                altinnConsumerProperties.getAppcertKeystoreType());
         return new SecurityCredentials(altinnConsumerProperties.getVirksomhetUserName(), altinnConsumerProperties.getVirksomhetPassord(), keyStore);
     }
 
