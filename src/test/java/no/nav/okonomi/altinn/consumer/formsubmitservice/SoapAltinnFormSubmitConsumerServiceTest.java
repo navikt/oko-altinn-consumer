@@ -22,7 +22,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AltinnFormSubmitConsumerServiceTest {
+class SoapAltinnFormSubmitConsumerServiceTest {
 
     private static final String SERVICE_CODE = "serviceCode";
     private static final String SERVICE_EDITION_CODE = "1";
@@ -46,12 +46,12 @@ class AltinnFormSubmitConsumerServiceTest {
     private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION));
 
     @InjectMocks
-    private AltinnFormSubmitConsumerService altinnFormSubmitConsumerService;
+    private SoapAltinnFormSubmitConsumerService soapAltinnFormSubmitConsumerService;
 
     @Test
     void submitForm() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage {
         when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(), any(), any())).thenReturn(getReceiptExternalBE());
-        SubmitFormTask submitFormTask = altinnFormSubmitConsumerService.submitForm(stubMessage());
+        SubmitFormTask submitFormTask = soapAltinnFormSubmitConsumerService.submitForm(stubMessage());
 
         assertEquals(REFERENCE_VALUE, submitFormTask.getReceiversReference());
         assertEquals(ORDER_ID, submitFormTask.getExternalShipmentReference());
@@ -61,7 +61,7 @@ class AltinnFormSubmitConsumerServiceTest {
     @Test
     void submitFormWithoutAttachment() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage {
         when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(), any(), any())).thenReturn(getReceiptExternalBE());
-        SubmitFormTask submitFormTask = altinnFormSubmitConsumerService.submitFormWithoutAttachment(stubMessage());
+        SubmitFormTask submitFormTask = soapAltinnFormSubmitConsumerService.submitFormWithoutAttachment(stubMessage());
         assertEquals(REFERENCE_VALUE, submitFormTask.getReceiversReference());
         assertEquals(ORDER_ID, submitFormTask.getExternalShipmentReference());
         assertEquals(RECEIPT_ID, submitFormTask.getReceiptId());

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AltinnCorrespondenceConsumerServiceTest {
+class SoapAltinnCorrespondenceConsumerServiceTest {
 
     private static final int LANGUAGE_ID = 1044;
 
@@ -36,11 +36,11 @@ class AltinnCorrespondenceConsumerServiceTest {
     @Mock
     private SecurityCredentials securityCredentials;
 
-    private AltinnCorrespondenceConsumerService altinnCorrespondenceConsumerService;
+    private SoapAltinnCorrespondenceConsumerService altinnCorrespondenceConsumerService;
 
     @BeforeEach
     void setUp() {
-        altinnCorrespondenceConsumerService = new AltinnCorrespondenceConsumerService(correspondenceService, securityCredentials, LANGUAGE_ID);
+        altinnCorrespondenceConsumerService = new SoapAltinnCorrespondenceConsumerService(correspondenceService, securityCredentials, LANGUAGE_ID);
     }
 
     @Test

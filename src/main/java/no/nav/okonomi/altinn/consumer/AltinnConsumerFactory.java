@@ -7,15 +7,18 @@ import no.altinn.intermediaryinboundexternalec.IntermediaryInboundExternalEC2;
 import no.altinn.receiptexternalec.IReceiptExternalEC2;
 import no.altinn.receiptexternalec.ReceiptExternalEC2;
 import no.nav.okonomi.altinn.consumer.correspondenceservice.AltinnCorrespondenceConsumerService;
+import no.nav.okonomi.altinn.consumer.correspondenceservice.SoapAltinnCorrespondenceConsumerService;
 import no.nav.okonomi.altinn.consumer.formsubmitservice.AltinnFormSubmitConsumerService;
 import no.nav.okonomi.altinn.consumer.formsubmitservice.FormSubmitServiceProperties;
 import no.nav.okonomi.altinn.consumer.formsubmitservice.FormTaskShipmentService;
+import no.nav.okonomi.altinn.consumer.formsubmitservice.SoapAltinnFormSubmitConsumerService;
 import no.nav.okonomi.altinn.consumer.interceptor.BadContextTokenInFaultInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.CookiesInInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.CookiesOutInterceptor;
 import no.nav.okonomi.altinn.consumer.interceptor.HeaderInterceptor;
 import no.nav.okonomi.altinn.consumer.receiptservice.AltinnReceiptConsumerService;
 import no.nav.okonomi.altinn.consumer.receiptservice.ReceiptService;
+import no.nav.okonomi.altinn.consumer.receiptservice.SoapAltinnReceiptConsumerService;
 import no.nav.okonomi.altinn.consumer.security.ClientCallBackHandler;
 import no.nav.okonomi.altinn.consumer.security.KeyStore;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
@@ -51,7 +54,7 @@ public class AltinnConsumerFactory {
 
     public AltinnCorrespondenceConsumerService createAltinnCorrespondenceConsumerService() {
 
-        return new AltinnCorrespondenceConsumerService(
+        return new SoapAltinnCorrespondenceConsumerService(
                 getICorrespondenceExternalEC2(getSecurityCredentials()),
                 getSecurityCredentials(),
                 Integer.parseInt(altinnConsumerProperties.getLanguageId()));
@@ -59,7 +62,7 @@ public class AltinnConsumerFactory {
 
     public AltinnFormSubmitConsumerService createAltinnFormSubmitConsumerService() {
 
-        return new AltinnFormSubmitConsumerService(
+        return new SoapAltinnFormSubmitConsumerService(
                 getIIntermediaryInboundExternalEC2(getSecurityCredentials()),
                 getSecurityCredentials(),
                 getFormTaskShipmentService());
@@ -67,7 +70,7 @@ public class AltinnConsumerFactory {
 
     public AltinnReceiptConsumerService createltinnReceiptConsumerService() {
 
-        return new AltinnReceiptConsumerService(getIReceiptExternalEC2(getSecurityCredentials()),
+        return new SoapAltinnReceiptConsumerService(getIReceiptExternalEC2(getSecurityCredentials()),
                 getSecurityCredentials(),
                 getReceiptService());
     }
