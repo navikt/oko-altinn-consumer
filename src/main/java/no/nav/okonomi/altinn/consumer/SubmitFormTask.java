@@ -12,14 +12,14 @@ public final class SubmitFormTask {
     private String receiversReference;
 
     /**
-     * Bestillingsid i RF1211MessageVO, vår referanse i NAV
+     * Bestillingsid i AltinnMessage, vår referanse i NAV
      */
     private String externalShipmentReference;
 
     public SubmitFormTask(Integer receiptId,
-                   String externalShipmentReference,
-                   String archiveReference,
-                   String receiversReference) {
+                          String externalShipmentReference,
+                          String archiveReference,
+                          String receiversReference) {
         this.receiptId = receiptId;
         this.externalShipmentReference = externalShipmentReference;
         this.archiveReference = archiveReference;

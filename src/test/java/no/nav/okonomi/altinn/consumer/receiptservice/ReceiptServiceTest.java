@@ -9,10 +9,10 @@ import no.altinn.receiptexternalec.v201506.Reference;
 import no.altinn.receiptexternalec.v201506.ReferenceList;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.SubmitFormTaskBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReceiptServiceTest {
 
@@ -30,10 +30,10 @@ public class ReceiptServiceTest {
 
         ReceiptSearch receiptSearch = receiptService.createReceipt(receiptId, extShipmentReference);
 
-        assertThat(receiptSearch.getReceiptId(), is(receiptId));
-        assertThat(receiptSearch.getReferences().getValue().getReference().size(), is(1));
-        assertThat(receiptSearch.getReferences().getValue().getReference().get(0).getReferenceType(), is(ReferenceType.EXTERNAL_SHIPMENT_REFERENCE));
-        assertThat(receiptSearch.getReferences().getValue().getReference().get(0).getReferenceValue(), is(extShipmentReference));
+        assertEquals(receiptId, receiptSearch.getReceiptId());
+        assertEquals(1, receiptSearch.getReferences().getValue().getReference().size());
+        assertEquals(ReferenceType.EXTERNAL_SHIPMENT_REFERENCE, receiptSearch.getReferences().getValue().getReference().get(0).getReferenceType());
+        assertEquals(extShipmentReference, receiptSearch.getReferences().getValue().getReference().get(0).getReferenceValue());
     }
 
     @Test
@@ -63,13 +63,13 @@ public class ReceiptServiceTest {
 
         SubmitFormTask returnedValue = receiptService.updateReceipt(receipt, submitFormTask);
 
-        assertThat(returnedValue.getReceiptId(), is(RECEIPT_ID));
-        assertThat(returnedValue.getExternalShipmentReference(), is(EXT_SHIPMENT_REF));
-        assertThat(returnedValue.getArchiveReference(), is(ARCHIVE_REF));
-        assertThat(returnedValue.getReceiversReference(), is(RECIEVER_REF));
+        assertEquals(RECEIPT_ID, returnedValue.getReceiptId());
+        assertEquals(EXT_SHIPMENT_REF, returnedValue.getExternalShipmentReference());
+        assertEquals(ARCHIVE_REF, returnedValue.getArchiveReference());
+        assertEquals(RECIEVER_REF, returnedValue.getReceiversReference());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void updateReceipt_recepitstatus_REJECTED() {
         ObjectFactory objectFactory = new ObjectFactory();
         Receipt receipt = objectFactory.createReceipt();
@@ -79,8 +79,9 @@ public class ReceiptServiceTest {
                 .receipdId(RECEIPT_ID)
                 .externalShipmentReference(EXT_SHIPMENT_REF)
                 .build();
-
-        receiptService.updateReceipt(receipt, submitFormTask);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            receiptService.updateReceipt(receipt, submitFormTask);
+        });
     }
 
 }

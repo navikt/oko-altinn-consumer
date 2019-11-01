@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.nav.okonomi</groupId>
@@ -21,39 +22,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.jdk.version>1.8</java.jdk.version>
-        <javax.inject.version>1</javax.inject.version>
         <scm.version>1.9.5</scm.version>
         <javadoc.version>2.9.1</javadoc.version>
-        <commons-io.version>2.5</commons-io.version>
+        <commons-io.version>2.6</commons-io.version>
         <maven.compiler.version>3.5.1</maven.compiler.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.release.version>2.5.3</maven.release.version>
         <maven.deploy.version>2.8.2</maven.deploy.version>
-        <spring.version>5.0.10.RELEASE</spring.version>
-        <cxf.version>3.2.6</cxf.version>
+        <cxf.version>3.3.3</cxf.version>
+        <slf4j.version>1.7.28</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jcl.slf4j.version>1.7.25</jcl.slf4j.version>
-        <junit.version>4.12</junit.version>
-        <mockito.version>1.9.5</mockito.version>
+        <junit.version>5.5.2</junit.version>
+        <mockito.version>2.23.4</mockito.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-ws-security</artifactId>
@@ -86,26 +69,32 @@
             <version>${commons-io.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -127,16 +116,16 @@
                         <configuration>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/IntermediaryInboundExternalEC.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/IntermediaryInboundExternalEC2.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-autoNameResolution</extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>no.altinn.intermediaryinboundexternalec</extraarg>
                                     </extraargs>
-                                    <wsdlLocation>/wsdl/IntermediaryInboundExternalEC.wsdl</wsdlLocation>
+                                    <wsdlLocation>/wsdl/IntermediaryInboundExternalEC2.wsdl</wsdlLocation>
                                 </wsdlOption>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/ReceiptExternalEC.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/ReceiptExternalEC2.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-autoNameResolution</extraarg>
                                         <extraarg>-p</extraarg>
@@ -146,16 +135,16 @@
                                             http://schemas.altinn.no/services/Intermediary/Receipt/2015/06=no.altinn.receiptexternalec.v201506
                                         </extraarg>
                                     </extraargs>
-                                    <wsdlLocation>/wsdl/ReceiptExternalEC.wsdl</wsdlLocation>
+                                    <wsdlLocation>/wsdl/ReceiptExternalEC2.wsdl</wsdlLocation>
                                 </wsdlOption>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/CorrespondenceExternalEC.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/CorrespondenceExternalEC2.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-autoNameResolution</extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>no.altinn.correspondenceexternalec</extraarg>
                                     </extraargs>
-                                    <wsdlLocation>/wsdl/CorrespondenceExternalEC.wsdl</wsdlLocation>
+                                    <wsdlLocation>/wsdl/CorrespondenceExternalEC2.wsdl</wsdlLocation>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>
@@ -204,6 +193,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${javadoc.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
         </plugins>
     </build>

@@ -1,6 +1,6 @@
 package no.nav.okonomi.altinn.consumer.receiptservice;
 
-import no.altinn.receiptexternalec.IReceiptExternalEC;
+import no.altinn.receiptexternalec.IReceiptExternalEC2;
 import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
@@ -8,32 +8,31 @@ import no.nav.okonomi.altinn.consumer.correspondenceservice.AltinnCorrespondence
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
+import java.util.Objects;
 
 /**
  * Created by Levent Demir (Capgemini)
  */
-@Component
-public class DefaultAltinnReceiptConsumerService implements AltinnReceiptConsumerService {
+public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAltinnReceiptConsumerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SoapAltinnReceiptConsumerService.class);
 
-    private final IReceiptExternalEC iReceiptExternalEC;
+    private final IReceiptExternalEC2 iReceiptExternalEC;
     private SecurityCredentials credentials;
     private ReceiptService receiptService;
 
-    @Inject
-    public DefaultAltinnReceiptConsumerService(IReceiptExternalEC iReceiptExternalEC,
-                                               SecurityCredentials credentials,
-                                               ReceiptService receiptService) {
-        this.credentials = credentials;
+    public SoapAltinnReceiptConsumerService(IReceiptExternalEC2 iReceiptExternalEC,
+                                            SecurityCredentials securityCredentials,
+                                            ReceiptService receiptService) {
+        Objects.requireNonNull(iReceiptExternalEC, "iReceiptExternalEC must not be null");
+        Objects.requireNonNull(securityCredentials, "securityCredentials must not be null");
+        Objects.requireNonNull(receiptService, "receiptService must not be null");
+        this.credentials = securityCredentials;
         this.iReceiptExternalEC = iReceiptExternalEC;
         this.receiptService = receiptService;
     }
 
-    @Override
     public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) {
         try {
             ReceiptSearch receiptSearch = receiptService.createReceipt(
@@ -49,12 +48,10 @@ public class DefaultAltinnReceiptConsumerService implements AltinnReceiptConsume
                     receipt,
                     submitFormTask);
         } catch (Exception e) {
-            LOGGER.error("Henting av kvittering fra Altinn feilet", e);
             throw new AltinnReceiptServiceException("Henting av kvittering fra Altinn feilet ", e);
         }
     }
 
-    @Override
     public synchronized void test() {
         try {
             iReceiptExternalEC.test();

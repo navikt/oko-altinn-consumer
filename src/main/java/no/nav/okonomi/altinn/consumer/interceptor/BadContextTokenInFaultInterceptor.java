@@ -39,7 +39,7 @@ public class BadContextTokenInFaultInterceptor extends AbstractPhaseInterceptor 
             for (QName subCode : subCodes) {
                 LOGGER.error("Found subCode: {}", subCode.getLocalPart());
                 if (subCode.getLocalPart().equalsIgnoreCase(ERROR_CODE_BAD_CONTEXT_TOKEN)) {
-                    String tokenId = (String)message.getContextualProperty(SecurityConstants.TOKEN_ID);
+                    String tokenId = (String) message.getContextualProperty(SecurityConstants.TOKEN_ID);
                     removeTokenFromMessageAndTokenStore(message, tokenId);
                     CookieStore.setCookie(null);
                     soapFault.setMessage("Token " + tokenId + " is removed from tokenstore, a new one will be requested on your next call. Message from server: " + soapFault.getMessage());

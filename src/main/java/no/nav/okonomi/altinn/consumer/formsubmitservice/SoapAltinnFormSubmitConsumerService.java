@@ -2,8 +2,8 @@ package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
 import no.altinn.intermediaryinboundexternalec.AltinnFault;
 import no.altinn.intermediaryinboundexternalec.FormTaskShipmentBE;
-import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC;
-import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalECSubmitFormTaskECAltinnFaultFaultFaultMessage;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage;
 import no.altinn.intermediaryinboundexternalec.ReceiptExternalBE;
 import no.altinn.intermediaryinboundexternalec.ReceiptStatusExternal;
 import no.altinn.intermediaryinboundexternalec.ReferenceExternalBE;
@@ -12,38 +12,37 @@ import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.xml.bind.JAXB;
 import java.io.StringWriter;
+import java.util.Objects;
 
 /**
  * Created by Levent Demir (Capgemini)
  */
-@Component
-public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitConsumerService {
+public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitConsumerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAltinnFormSubmitConsumerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SoapAltinnFormSubmitConsumerService.class);
 
     private static final String FEIL_VED_AA_SENDE = "Feil ved å sende skjema til Altinn: ";
 
-    private final IIntermediaryInboundExternalEC formSubmitService;
+    private final IIntermediaryInboundExternalEC2 iIntermediaryInboundExternalEC2;
 
     private SecurityCredentials credentials;
 
     private FormTaskShipmentService formTaskShipmentService;
 
-    @Inject
-    public DefaultAltinnFormSubmitConsumerService(IIntermediaryInboundExternalEC formSubmitService,
-                                                  SecurityCredentials credentials,
-                                                  FormTaskShipmentService formTaskShipmentService) {
-        this.formSubmitService = formSubmitService;
-        this.credentials = credentials;
+    public SoapAltinnFormSubmitConsumerService(IIntermediaryInboundExternalEC2 iIntermediaryInboundExternalEC2,
+                                               SecurityCredentials securityCredentials,
+                                               FormTaskShipmentService formTaskShipmentService) {
+        Objects.requireNonNull(iIntermediaryInboundExternalEC2, "iIntermediaryInboundExternalEC2 must not be null");
+        Objects.requireNonNull(securityCredentials, "securityCredentials must not be null");
+        Objects.requireNonNull(formTaskShipmentService, "formTaskShipmentService must not be null");
+        this.iIntermediaryInboundExternalEC2 = iIntermediaryInboundExternalEC2;
+        this.credentials = securityCredentials;
         this.formTaskShipmentService = formTaskShipmentService;
     }
 
-    @Override
     public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(altinnMessage);
         ReceiptExternalBE receipt = submitFormTaskEC(formTaskShipment);
@@ -51,7 +50,6 @@ public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitC
         return insertReceipt(receipt, altinnMessage.getOrderId());
     }
 
-    @Override
     public synchronized SubmitFormTask submitFormWithoutAttachment(AltinnMessage altinnMessage) {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipmentWithoutAttachments(altinnMessage);
         ReceiptExternalBE receipt = submitFormTaskEC(formTaskShipment);
@@ -59,10 +57,9 @@ public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitC
         return insertReceipt(receipt, altinnMessage.getOrderId());
     }
 
-    @Override
     public synchronized void test() {
         try {
-            formSubmitService.test();
+            iIntermediaryInboundExternalEC2.test();
         } catch (Exception e) {
             LOGGER.warn("Feil ved å sende skjema test til Altinn: {}", e.getMessage());
             throw new AltinnFormSubmitServiceException("Feil ved å sende skjema test til Altinn: ", e);
@@ -72,8 +69,8 @@ public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitC
     private ReceiptExternalBE submitFormTaskEC(FormTaskShipmentBE formTaskShipment) {
         try {
             logFormTaskShipment(formTaskShipment);
-            return formSubmitService.submitFormTaskEC(credentials.getVirksomhetsbruker(), credentials.getVirksomhetsbrukerPassord(), formTaskShipment);
-        } catch (IIntermediaryInboundExternalECSubmitFormTaskECAltinnFaultFaultFaultMessage e) {
+            return iIntermediaryInboundExternalEC2.submitFormTaskEC(credentials.getVirksomhetsbruker(), credentials.getVirksomhetsbrukerPassord(), formTaskShipment);
+        } catch (IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage e) {
             LOGGER.error(getAltinnErrorMessage(e));
             throw new AltinnFormSubmitServiceException(FEIL_VED_AA_SENDE, e);
         } catch (IllegalArgumentException e) {
@@ -91,7 +88,7 @@ public class DefaultAltinnFormSubmitConsumerService implements AltinnFormSubmitC
         LOGGER.debug("Formtaskshipment til Altinn: {}", xml);
     }
 
-    private String getAltinnErrorMessage(IIntermediaryInboundExternalECSubmitFormTaskECAltinnFaultFaultFaultMessage altinne) {
+    private String getAltinnErrorMessage(IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage altinne) {
         AltinnFault fault = altinne.getFaultInfo();
         String errMsg = fault.getAltinnErrorMessage().getValue();
         Integer errId = fault.getErrorID();

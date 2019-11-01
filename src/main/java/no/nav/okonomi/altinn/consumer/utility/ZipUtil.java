@@ -19,10 +19,10 @@ import java.util.zip.ZipOutputStream;
 public final class ZipUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZipUtil.class);
-    private static final byte[] MAGIC_GZIP = new byte[] { 0x1F, (byte) 0x8B, 0x08 };
-    private static final byte[] MAGIC_BZIP = new byte[] { 0x42, 0x5A };
-    private static final byte[]MAGIC_PKZIP = new byte[] { 0x50, 0x4B, 0x03, 0x04 };
-    private static final byte[] MAGIC_COMPRESS = new byte[] { 0x1F, (byte) 0x9D };
+    private static final byte[] MAGIC_GZIP = new byte[]{0x1F, (byte) 0x8B, 0x08};
+    private static final byte[] MAGIC_BZIP = new byte[]{0x42, 0x5A};
+    private static final byte[] MAGIC_PKZIP = new byte[]{0x50, 0x4B, 0x03, 0x04};
+    private static final byte[] MAGIC_COMPRESS = new byte[]{0x1F, (byte) 0x9D};
 
     private ZipUtil() {
     }
@@ -30,8 +30,7 @@ public final class ZipUtil {
     /**
      * gzip's a byte array
      *
-     * @param input
-     *            byte array to compress
+     * @param input byte array to compress
      * @return byte[] the compressed result
      */
     public static byte[] gzipByteArray(byte[] input) throws IOException {
@@ -41,8 +40,7 @@ public final class ZipUtil {
     /**
      * zip's a byte array
      *
-     * @param input
-     *            byte array to compress
+     * @param input    byte array to compress
      * @param filename
      * @return byte[] the compressed result
      */
@@ -53,10 +51,8 @@ public final class ZipUtil {
     /**
      * compresses a byte array
      *
-     * @param uncompressedBytes
-     *            byte array to compress
+     * @param uncompressedBytes byte array to compress
      * @param filename
-     *
      * @return byte[] the compressed result
      */
     private static byte[] compress(byte[] uncompressedBytes, String filename) throws IOException {
@@ -88,8 +84,7 @@ public final class ZipUtil {
     /**
      * ungzip's a byte array
      *
-     * @param input
-     *            byte array to uncompress
+     * @param input byte array to uncompress
      * @return byte[] the uncompressed result
      */
     public static byte[] unGzipByteArray(byte[] input) throws IOException {
@@ -99,8 +94,7 @@ public final class ZipUtil {
     /**
      * unzip's a byte array
      *
-     * @param input
-     *            byte array to uncompress
+     * @param input byte array to uncompress
      * @return byte[] the uncompressed result
      */
     public static byte[] unZipByteArray(byte[] input) throws IOException {
@@ -110,10 +104,8 @@ public final class ZipUtil {
     /**
      * uncompresses a byte array
      *
-     * @param compressedBytes
-     *            byte array to uncompress
-     * @param gnu
-     *            true for gzip, false for zip
+     * @param compressedBytes byte array to uncompress
+     * @param gnu             true for gzip, false for zip
      * @return byte[] the uncompressed result
      */
     private static byte[] uncompress(byte[] compressedBytes, boolean gnu) throws IOException {
@@ -183,6 +175,7 @@ public final class ZipUtil {
 
     /**
      * adds bytes to a ZipOutputStream
+     *
      * @param zos
      * @param bytes
      * @param fname

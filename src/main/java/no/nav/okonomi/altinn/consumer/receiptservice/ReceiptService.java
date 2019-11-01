@@ -10,11 +10,9 @@ import no.altinn.receiptexternalec.v201506.ReferenceList;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
 
-@Service
 public class ReceiptService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptService.class);

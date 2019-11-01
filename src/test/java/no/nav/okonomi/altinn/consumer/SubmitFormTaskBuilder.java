@@ -1,7 +1,5 @@
 package no.nav.okonomi.altinn.consumer;
 
-import org.springframework.util.StringUtils;
-
 public class SubmitFormTaskBuilder {
 
     private Integer receiptId;
@@ -35,9 +33,13 @@ public class SubmitFormTaskBuilder {
     }
 
     private void verifyNotNullValues() {
-        if (receiptId == null || StringUtils.isEmpty(externalShipmentReference)) {
+        if (receiptId == null || isEmpty(externalShipmentReference)) {
             throw new IllegalStateException("Not all required values given");
         }
+    }
+
+    private boolean isEmpty(String toTest) {
+        return "".equals(toTest) || toTest == null;
     }
 
 }

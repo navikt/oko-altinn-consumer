@@ -28,8 +28,8 @@ public class CookiesInInterceptor extends AbstractPhaseInterceptor {
     @Override
     public void handleMessage(Message message) throws Fault {
         Map<String, List> headers = (Map<String, List>) message.get(Message.PROTOCOL_HEADERS);
-        List<Cookie> cookies= headers.get("Set-Cookie");
-        if(cookies != null) {
+        List<Cookie> cookies = headers.get("Set-Cookie");
+        if (cookies != null) {
             LOGGER.debug("CookiesInInterceptor -- cookie to be stored in cookiestore: {}", cookies.get(0));
             LOGGER.info("Setter NIET cookie");
         }
