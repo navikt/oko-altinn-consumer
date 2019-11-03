@@ -4,6 +4,7 @@ import no.altinn.intermediaryinboundexternalec.AltinnFault;
 import no.altinn.intermediaryinboundexternalec.FormTaskShipmentBE;
 import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2;
 import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage;
+import no.altinn.intermediaryinboundexternalec.IIntermediaryInboundExternalEC2TestAltinnFaultFaultFaultMessage;
 import no.altinn.intermediaryinboundexternalec.ReceiptExternalBE;
 import no.altinn.intermediaryinboundexternalec.ReceiptStatusExternal;
 import no.altinn.intermediaryinboundexternalec.ReferenceExternalBE;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBElement;
 import java.io.StringWriter;
 import java.util.Objects;
 
@@ -43,43 +45,66 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
         this.formTaskShipmentService = formTaskShipmentService;
     }
 
-    public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) {
+    public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) throws AltinnFormSubmitServiceException {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(altinnMessage);
         ReceiptExternalBE receipt = submitFormTaskEC(formTaskShipment);
-
         return insertReceipt(receipt, altinnMessage.getOrderId());
     }
 
-    public synchronized SubmitFormTask submitFormWithoutAttachment(AltinnMessage altinnMessage) {
+    public synchronized SubmitFormTask submitFormWithoutAttachment(AltinnMessage altinnMessage) throws AltinnFormSubmitServiceException {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipmentWithoutAttachments(altinnMessage);
         ReceiptExternalBE receipt = submitFormTaskEC(formTaskShipment);
-
         return insertReceipt(receipt, altinnMessage.getOrderId());
     }
 
-    public synchronized void test() {
+    public synchronized void test() throws AltinnFormSubmitServiceException {
         try {
             iIntermediaryInboundExternalEC2.test();
-        } catch (Exception e) {
-            LOGGER.warn("Feil ved å sende skjema test til Altinn: {}", e.getMessage());
-            throw new AltinnFormSubmitServiceException("Feil ved å sende skjema test til Altinn: ", e);
+        } catch (IIntermediaryInboundExternalEC2TestAltinnFaultFaultFaultMessage altinnFaultFaultFaultMessage) {
+            AltinnFault faultInfo = altinnFaultFaultFaultMessage.getFaultInfo();
+            LOGGER.warn("Feil ved å sende skjema test til Altinn: {}", altinnFaultFaultFaultMessage.getMessage());
+            throw new AltinnFormSubmitServiceException(
+                    "Feil ved å sende skjema test til Altinn: ",
+                    getSafeString(faultInfo.getAltinnErrorMessage()),
+                    faultInfo.getErrorID(),
+                    altinnFaultFaultFaultMessage);
         }
     }
 
-    private ReceiptExternalBE submitFormTaskEC(FormTaskShipmentBE formTaskShipment) {
+    private ReceiptExternalBE submitFormTaskEC(FormTaskShipmentBE formTaskShipment) throws AltinnFormSubmitServiceException {
         try {
             logFormTaskShipment(formTaskShipment);
-            return iIntermediaryInboundExternalEC2.submitFormTaskEC(credentials.getVirksomhetsbruker(), credentials.getVirksomhetsbrukerPassord(), formTaskShipment);
+            return iIntermediaryInboundExternalEC2.submitFormTaskEC(
+                    credentials.getVirksomhetsbruker(),
+                    credentials.getVirksomhetsbrukerPassord(),
+                    formTaskShipment);
         } catch (IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage e) {
-            LOGGER.error(getAltinnErrorMessage(e));
-            throw new AltinnFormSubmitServiceException(FEIL_VED_AA_SENDE, e);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Melding feilet hos mottakeren: {}", e);
-            throw new AltinnFormSubmitServiceException(FEIL_VED_AA_SENDE, e);
-        } catch (Exception e) {
-            LOGGER.error("Ukjent feil oppstått: {}", e);
-            throw new AltinnFormSubmitServiceException(FEIL_VED_AA_SENDE, e);
+            AltinnFault faultInfo = e.getFaultInfo();
+            LOGGER.error(getAltinnErrorMessage(faultInfo));
+            throw new AltinnFormSubmitServiceException(
+                    FEIL_VED_AA_SENDE,
+                    getSafeString(faultInfo.getAltinnErrorMessage()),
+                    faultInfo.getErrorID(),
+                    e);
         }
+    }
+
+    private String getAltinnErrorMessage(AltinnFault fault) {
+        return fault == null ? "Ingen FaultInfo" : getAltinnFaultAsString(fault);
+    }
+
+    private String getAltinnFaultAsString(AltinnFault fault) {
+        return "ErrorMessage:" + getSafeString(fault.getAltinnErrorMessage()) + '/' +
+                "ExtendedErrorMessage:" + getSafeString(fault.getAltinnExtendedErrorMessage()) + '/' +
+                "LocalizedErrorMessage:" + getSafeString(fault.getAltinnLocalizedErrorMessage()) + '/' +
+                "ErrorGuid:" + getSafeString(fault.getErrorGuid()) + '/' +
+                "ErrorID:" + fault.getErrorID() + '/' +
+                "UserGuid:" + getSafeString(fault.getUserGuid()) + '/' +
+                "UserId:" + getSafeString(fault.getUserId());
+    }
+
+    private String getSafeString(JAXBElement<String> element) {
+        return element != null ? element.getValue() : "null";
     }
 
     private void logFormTaskShipment(FormTaskShipmentBE formTaskShipment) {
@@ -88,20 +113,7 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
         LOGGER.debug("Formtaskshipment til Altinn: {}", xml);
     }
 
-    private String getAltinnErrorMessage(IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage altinne) {
-        AltinnFault fault = altinne.getFaultInfo();
-        String errMsg = fault.getAltinnErrorMessage().getValue();
-        Integer errId = fault.getErrorID();
-        return "ErrorMessage:" + errMsg + '/' +
-                "ExtendedErrorMessage:" + fault.getAltinnExtendedErrorMessage().getValue() + '/' +
-                "LocalizedErrorMessage:" + fault.getAltinnLocalizedErrorMessage().getValue() + '/' +
-                "ErrorGuid:" + fault.getErrorGuid().getValue() + '/' +
-                "ErrorID:" + errId + '/' +
-                "UserGuid:" + fault.getUserGuid().getValue() + '/' +
-                "UserId:" + fault.getUserId().getValue();
-    }
-
-    private SubmitFormTask insertReceipt(ReceiptExternalBE receipt, String externalShipmentReference) {
+    private SubmitFormTask insertReceipt(ReceiptExternalBE receipt, String externalShipmentReference) throws AltinnFormSubmitServiceException {
         ReceiptStatusExternal status = receipt.getReceiptStatusCode();
         String recRef = null;
         String archRef = null;
@@ -117,7 +129,8 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
             }
             return new SubmitFormTask(receipt.getReceiptId(), externalShipmentReference, archRef, recRef);
         } else {
-            throw new IllegalArgumentException("ReceiptStatus er ikke OK, var " + status + " (" + receipt.getReceiptText() + ")");
+            throw new AltinnFormSubmitServiceException("ReceiptStatus er ikke OK, var " + status + " (" + receipt.getReceiptText() + ")");
+            //TODO burde ikke kaste exception her
         }
     }
 

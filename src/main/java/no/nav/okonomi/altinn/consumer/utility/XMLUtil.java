@@ -1,6 +1,5 @@
 package no.nav.okonomi.altinn.consumer.utility;
 
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -18,12 +17,8 @@ public class XMLUtil {
     }
 
     public static Document getDocument(byte[] input, boolean namespaceAware, boolean validating) throws ParserConfigurationException, SAXException, IOException {
-        InputStream stream = null;
-        try {
-            stream = new ByteArrayInputStream(input);
+        try (InputStream stream = new ByteArrayInputStream(input)){
             return getDocument(stream, namespaceAware, validating);
-        } finally {
-            IOUtils.closeQuietly(stream);
         }
     }
 

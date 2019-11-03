@@ -7,12 +7,15 @@ import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
 import no.altinn.receiptexternalec.v201506.Reference;
 import no.altinn.receiptexternalec.v201506.ReferenceList;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.SubmitFormTaskBuilder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException.INTERNAL_FAULT_REASON;
+import static no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException.INTERNAL_OR_NO_FAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ReceiptServiceTest {
 
@@ -37,7 +40,7 @@ public class ReceiptServiceTest {
     }
 
     @Test
-    public void updateReceipt_recepitstatus_OK() {
+    public void updateReceipt_recepitstatus_OK() throws AltinnReceiptServiceException {
         ObjectFactory objectFactory = new ObjectFactory();
         Receipt receipt = objectFactory.createReceipt();
         receipt.setReceiptStatus(ReceiptStatusEnum.OK);
@@ -79,9 +82,13 @@ public class ReceiptServiceTest {
                 .receipdId(RECEIPT_ID)
                 .externalShipmentReference(EXT_SHIPMENT_REF)
                 .build();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        AltinnReceiptServiceException exception = assertThrows(AltinnReceiptServiceException.class, () -> {
             receiptService.updateReceipt(receipt, submitFormTask);
         });
+
+        assertEquals(AltinnConsumerServiceException.FaultCode.INTERNAL_FAULT,exception.getFaultCode());
+        assertEquals(INTERNAL_OR_NO_FAULT, exception.getFaultCodeValue());
+        assertEquals(INTERNAL_FAULT_REASON, exception.getFaultReason());
     }
 
 }

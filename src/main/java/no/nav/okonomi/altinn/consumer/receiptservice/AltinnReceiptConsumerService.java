@@ -4,6 +4,6 @@ import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 
 public interface AltinnReceiptConsumerService {
 
-    SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask);
-    void test();
+    SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) throws AltinnReceiptServiceException;
+    void test() throws AltinnReceiptServiceException;
 }

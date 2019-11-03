@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 
 public interface AltinnCorrespondenceConsumerService {
 
-    Document retrieveDocument(SubmitFormTask submitFormTask);
-    void test();
+    Document retrieveDocument(SubmitFormTask submitFormTask) throws AltinnCorrespondenceConsumerServiceException;
+
+    void test() throws AltinnCorrespondenceConsumerServiceException;
 }

@@ -43,7 +43,7 @@ public class ReceiptService {
         return receiptSearch;
     }
 
-    SubmitFormTask updateReceipt(Receipt receipt, SubmitFormTask submitFormTask) {
+    SubmitFormTask updateReceipt(Receipt receipt, SubmitFormTask submitFormTask) throws AltinnReceiptServiceException {
         if (ReceiptStatusEnum.OK == receipt.getReceiptStatus()) {
             String archiveReference = submitFormTask.getArchiveReference();
             String receiversReference = submitFormTask.getReceiversReference();
@@ -70,7 +70,7 @@ public class ReceiptService {
             }
 
             LOGGER.warn("Kvittering med status {} mottatt fra Altinn: {}", receipt.getReceiptStatus(), sb);
-            throw new IllegalArgumentException(sb.toString());
+            throw new AltinnReceiptServiceException(sb.toString());//TODO burde dette kaste exeption i det hele tatt?
         }
     }
 

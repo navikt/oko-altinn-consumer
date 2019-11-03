@@ -1,14 +1,17 @@
 package no.nav.okonomi.altinn.consumer.receiptservice;
 
+import no.altinn.receiptexternalec.AltinnFault;
 import no.altinn.receiptexternalec.IReceiptExternalEC2;
+import no.altinn.receiptexternalec.IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage;
+import no.altinn.receiptexternalec.IReceiptExternalEC2TestAltinnFaultFaultFaultMessage;
 import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
-import no.nav.okonomi.altinn.consumer.correspondenceservice.AltinnCorrespondenceServiceException;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.bind.JAXBElement;
 import java.util.Objects;
 
 /**
@@ -33,7 +36,7 @@ public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerSe
         this.receiptService = receiptService;
     }
 
-    public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) {
+    public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) throws AltinnReceiptServiceException {
         try {
             ReceiptSearch receiptSearch = receiptService.createReceipt(
                     submitFormTask.getReceiptId(),
@@ -44,21 +47,51 @@ public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerSe
                     credentials.getVirksomhetsbrukerPassord(),
                     receiptSearch);
 
-            return receiptService.updateReceipt(
-                    receipt,
-                    submitFormTask);
-        } catch (Exception e) {
-            throw new AltinnReceiptServiceException("Henting av kvittering fra Altinn feilet ", e);
+            return receiptService.updateReceipt(receipt,submitFormTask);
+
+
+        } catch (IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage faultMessage) {
+            AltinnFault faultInfo = faultMessage.getFaultInfo();
+            throw new AltinnReceiptServiceException(
+                    "Henting av kvittering fra Altinn feilet ",
+                    getSafeString(faultInfo.getAltinnErrorMessage()),
+                    faultInfo.getErrorID(),
+                    faultMessage);
         }
     }
 
-    public synchronized void test() {
+    public synchronized void test() throws AltinnReceiptServiceException {
         try {
             iReceiptExternalEC.test();
-        } catch (Exception e) {
-            LOGGER.warn("Henting av kvittering fra Altinn feilet", e);
-            throw new AltinnCorrespondenceServiceException("Henting av kvittering fra Altinn feilet ", e);
+        } catch (IReceiptExternalEC2TestAltinnFaultFaultFaultMessage faultMessage) {
+            AltinnFault faultInfo = faultMessage.getFaultInfo();
+             LOGGER.warn("Henting av kvittering fra Altinn feilet", faultMessage);
+            throw new AltinnReceiptServiceException(
+                    "Henting av kvittering fra Altinn feilet ",
+                    getSafeString(faultInfo.getAltinnErrorMessage()),
+                    faultInfo.getErrorID(),
+                    faultMessage);
+
         }
+
+    }
+
+    private String getAltinnErrorMessage(AltinnFault fault) {
+        return fault == null ? "Ingen FaultInfo" : getAltinnFaultAsString(fault);
+    }
+
+    private String getAltinnFaultAsString(AltinnFault fault) {
+        return "ErrorMessage:" + getSafeString(fault.getAltinnErrorMessage()) + '/' +
+                "ExtendedErrorMessage:" + getSafeString(fault.getAltinnExtendedErrorMessage()) + '/' +
+                "LocalizedErrorMessage:" + getSafeString(fault.getAltinnLocalizedErrorMessage()) + '/' +
+                "ErrorGuid:" + getSafeString(fault.getErrorGuid()) + '/' +
+                "ErrorID:" + fault.getErrorID() + '/' +
+                "UserGuid:" + getSafeString(fault.getUserGuid()) + '/' +
+                "UserId:" + getSafeString(fault.getUserId());
+    }
+
+    private String getSafeString(JAXBElement<String> element) {
+        return element != null ? element.getValue() : "null";
     }
 
 }
