@@ -47,7 +47,7 @@ public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerSe
                     credentials.getVirksomhetsbrukerPassord(),
                     receiptSearch);
 
-            return receiptService.updateReceipt(receipt,submitFormTask);
+            return receiptService.updateReceipt(receipt, submitFormTask);
 
 
         } catch (IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage faultMessage) {
@@ -65,7 +65,7 @@ public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerSe
             iReceiptExternalEC.test();
         } catch (IReceiptExternalEC2TestAltinnFaultFaultFaultMessage faultMessage) {
             AltinnFault faultInfo = faultMessage.getFaultInfo();
-             LOGGER.warn("Henting av kvittering fra Altinn feilet", faultMessage);
+            LOGGER.error("Henting av kvittering fra Altinn feilet" + getAltinnErrorMessage(faultInfo));
             throw new AltinnReceiptServiceException(
                     "Henting av kvittering fra Altinn feilet ",
                     getSafeString(faultInfo.getAltinnErrorMessage()),

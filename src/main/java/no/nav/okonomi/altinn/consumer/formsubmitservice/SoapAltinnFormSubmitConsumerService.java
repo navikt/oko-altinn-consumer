@@ -62,7 +62,7 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
             iIntermediaryInboundExternalEC2.test();
         } catch (IIntermediaryInboundExternalEC2TestAltinnFaultFaultFaultMessage altinnFaultFaultFaultMessage) {
             AltinnFault faultInfo = altinnFaultFaultFaultMessage.getFaultInfo();
-            LOGGER.warn("Feil ved å sende skjema test til Altinn: {}", altinnFaultFaultFaultMessage.getMessage());
+            LOGGER.error("Feil ved å sende skjema test til Altinn: {}", getAltinnErrorMessage(faultInfo));
             throw new AltinnFormSubmitServiceException(
                     "Feil ved å sende skjema test til Altinn: ",
                     getSafeString(faultInfo.getAltinnErrorMessage()),

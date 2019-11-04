@@ -71,15 +71,15 @@ public class SoapAltinnCorrespondenceConsumerService implements AltinnCorrespond
             }
         }
         LOGGER.warn("Ingen vedlegg mottat type av {} eller {}", AttachmentType.TEXT_XML, AttachmentType.APPLICATION_ZIP);
-        return null;
+        return null;//todo return null er dårlig practice
     }
 
     public synchronized void test() throws AltinnCorrespondenceConsumerServiceException {
         try {
             iCorrespondenceExternalEC2.test();
         } catch (ICorrespondenceExternalEC2TestAltinnFaultFaultFaultMessage altinne) {
-            LOGGER.error("Feil ved å motta test melding fra Altinn: {}", altinne.getMessage());
             AltinnFault faultInfo = altinne.getFaultInfo();
+            LOGGER.error(FEIL_VED_AA_MOTTA,getAltinnErrorMessage(faultInfo));
             throw new AltinnCorrespondenceConsumerServiceException(
                     FEIL_VED_AA_MOTTA,
                     getSafeString(faultInfo.getAltinnErrorMessage()),
@@ -141,7 +141,7 @@ public class SoapAltinnCorrespondenceConsumerService implements AltinnCorrespond
         } else {
             decompressedBytes = bytes;
         }
-        LOGGER.info("Meldingen med reportee element id: {}  er dekomprimert, lengde før: {} byte, lengde etter: {} byte",
+        LOGGER.debug("Meldingen med reportee element id: {}  er dekomprimert, lengde før: {} byte, lengde etter: {} byte",
                 reporteeElementID, before, decompressedBytes != null ? decompressedBytes.length : 0);
         return decompressedBytes;
     }
