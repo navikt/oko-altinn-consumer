@@ -17,7 +17,7 @@ public class ReceiptService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptService.class);
 
-    private ObjectFactory objectFactory;
+    private final ObjectFactory objectFactory;
 
     public ReceiptService() {
         this.objectFactory = new ObjectFactory();

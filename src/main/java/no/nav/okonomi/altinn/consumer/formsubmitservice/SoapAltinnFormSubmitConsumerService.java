@@ -30,9 +30,9 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
 
     private final IIntermediaryInboundExternalEC2 iIntermediaryInboundExternalEC2;
 
-    private SecurityCredentials credentials;
+    private final SecurityCredentials credentials;
 
-    private FormTaskShipmentService formTaskShipmentService;
+    private final FormTaskShipmentService formTaskShipmentService;
 
     public SoapAltinnFormSubmitConsumerService(IIntermediaryInboundExternalEC2 iIntermediaryInboundExternalEC2,
                                                SecurityCredentials securityCredentials,

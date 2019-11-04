@@ -22,8 +22,8 @@ public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerSe
     private static final Logger LOGGER = LoggerFactory.getLogger(SoapAltinnReceiptConsumerService.class);
 
     private final IReceiptExternalEC2 iReceiptExternalEC;
-    private SecurityCredentials credentials;
-    private ReceiptService receiptService;
+    private final SecurityCredentials credentials;
+    private final ReceiptService receiptService;
 
     public SoapAltinnReceiptConsumerService(IReceiptExternalEC2 iReceiptExternalEC,
                                             SecurityCredentials securityCredentials,

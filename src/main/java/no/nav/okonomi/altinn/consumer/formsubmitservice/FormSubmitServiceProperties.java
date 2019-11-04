@@ -2,10 +2,10 @@ package no.nav.okonomi.altinn.consumer.formsubmitservice;
 
 public final class FormSubmitServiceProperties {
 
-    private String serviceCode;
-    private String serviceEditionCode;
-    private String dataFormatId;
-    private String dataFormatVersion;
+    private final String serviceCode;
+    private final String serviceEditionCode;
+    private final String dataFormatId;
+    private final String dataFormatVersion;
 
     public FormSubmitServiceProperties(String serviceCode,
                                        String serviceEditionCode,

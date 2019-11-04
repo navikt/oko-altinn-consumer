@@ -7,7 +7,7 @@ import javax.security.auth.callback.CallbackHandler;
 
 public class ClientCallBackHandler implements CallbackHandler {
 
-    private String password;
+    private final String password;
 
     public ClientCallBackHandler(String password) {
         this.password = password;

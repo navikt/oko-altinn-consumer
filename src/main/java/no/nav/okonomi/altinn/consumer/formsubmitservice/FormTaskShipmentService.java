@@ -15,12 +15,12 @@ import java.util.Objects;
 
 public class FormTaskShipmentService {
 
-    private ObjectFactory objectFactory;
-    private FormSubmitServiceProperties formSubmitServiceProps;
+    private final ObjectFactory objectFactory;
+    private final FormSubmitServiceProperties formSubmitServiceProps;
 
     public FormTaskShipmentService(FormSubmitServiceProperties formSubmitServiceProps) {
-        this.formSubmitServiceProps = formSubmitServiceProps;
         Objects.requireNonNull(formSubmitServiceProps, "formSubmitServiceProps must not be null");
+        this.formSubmitServiceProps = formSubmitServiceProps;
         objectFactory = new ObjectFactory();
     }
 

@@ -5,11 +5,11 @@ public final class SubmitFormTask {
     /**
      * KvitteringsId, referanse fra Altinn
      */
-    private Integer receiptId;
+    private final Integer receiptId;
 
-    private String archiveReference;
+    private final String archiveReference;
 
-    private String receiversReference;
+    private final String receiversReference;
 
     /**
      * Bestillingsid i AltinnMessage, vår referanse i NAV
