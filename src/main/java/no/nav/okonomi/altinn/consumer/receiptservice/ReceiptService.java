@@ -7,6 +7,7 @@ import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
 import no.altinn.receiptexternalec.v201506.Reference;
 import no.altinn.receiptexternalec.v201506.ReferenceList;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class ReceiptService {
         return receiptSearch;
     }
 
-    SubmitFormTask updateReceipt(Receipt receipt, SubmitFormTask submitFormTask) throws AltinnReceiptServiceException {
+    SubmitFormTask updateReceipt(Receipt receipt, SubmitFormTask submitFormTask) throws AltinnConsumerInternalException {
         if (ReceiptStatusEnum.OK == receipt.getReceiptStatus()) {
             String archiveReference = submitFormTask.getArchiveReference();
             String receiversReference = submitFormTask.getReceiversReference();
@@ -70,7 +71,7 @@ public class ReceiptService {
             }
 
             LOGGER.warn("Kvittering med status {} mottatt fra Altinn: {}", receipt.getReceiptStatus(), sb);
-            throw new AltinnReceiptServiceException(sb.toString());//TODO burde dette kaste exeption i det hele tatt?
+            throw new AltinnConsumerInternalException(sb.toString());//TODO burde dette kaste exeption i det hele tatt?
         }
     }
 

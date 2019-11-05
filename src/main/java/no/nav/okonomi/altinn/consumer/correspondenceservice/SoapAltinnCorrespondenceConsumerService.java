@@ -9,6 +9,7 @@ import no.altinn.correspondenceexternalec.CorrespondenceV2;
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2;
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage;
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2TestAltinnFaultFaultFaultMessage;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import no.nav.okonomi.altinn.consumer.utility.XMLUtil;
@@ -48,7 +49,7 @@ public class SoapAltinnCorrespondenceConsumerService implements AltinnCorrespond
         this.languageId = languageId;
     }
 
-    public synchronized Document retrieveDocument(SubmitFormTask submitFormTask) throws AltinnCorrespondenceConsumerServiceException {
+    public synchronized Document retrieveDocument(SubmitFormTask submitFormTask) throws AltinnCorrespondenceConsumerServiceException, AltinnConsumerInternalException {
         CorrespondenceForEndUserSystemV2 correspondence = correspondence(Integer.valueOf(submitFormTask.getReceiversReference()));
         JAXBElement<AttachmentBEV2List> attList = correspondence.getCorrespondenceAttachments();
 
@@ -66,7 +67,7 @@ public class SoapAltinnCorrespondenceConsumerService implements AltinnCorrespond
                     bytes = decompress(bytes, Integer.valueOf(submitFormTask.getReceiversReference()));
                     return XMLUtil.getDocument(bytes, true);
                 } catch (ParserConfigurationException | SAXException | IOException e) {
-                    throw new AltinnCorrespondenceConsumerServiceException("Feil ved å behandle vedlegget fra Altinn", e);
+                    throw new AltinnConsumerInternalException("Feil ved å behandle vedlegget fra Altinn", e);
                 }
             }
         }
@@ -79,7 +80,7 @@ public class SoapAltinnCorrespondenceConsumerService implements AltinnCorrespond
             iCorrespondenceExternalEC2.test();
         } catch (ICorrespondenceExternalEC2TestAltinnFaultFaultFaultMessage altinne) {
             AltinnFault faultInfo = altinne.getFaultInfo();
-            LOGGER.error(FEIL_VED_AA_MOTTA,getAltinnErrorMessage(faultInfo));
+            LOGGER.error(FEIL_VED_AA_MOTTA + getAltinnErrorMessage(faultInfo));
             throw new AltinnCorrespondenceConsumerServiceException(
                     FEIL_VED_AA_MOTTA,
                     getSafeString(faultInfo.getAltinnErrorMessage()),

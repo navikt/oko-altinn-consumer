@@ -10,7 +10,7 @@ import no.altinn.receiptexternalec.v201506.ObjectFactory;
 import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.Reference;
 import no.altinn.receiptexternalec.v201506.ReferenceList;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.SubmitFormTaskBuilder;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
@@ -23,8 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.xml.bind.JAXBElement;
 
-import static no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException.INTERNAL_FAULT_REASON;
-import static no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException.INTERNAL_OR_NO_FAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,7 +50,7 @@ class SoapAltinnReceiptConsumerServiceTest {
     SoapAltinnReceiptConsumerService altinnReceiptConsumerService;
 
     @Test
-    void getReceiptWithSubmitForm() throws IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage, AltinnReceiptServiceException {
+    void getReceiptWithSubmitForm() throws IReceiptExternalEC2GetReceiptECV2AltinnFaultFaultFaultMessage, AltinnReceiptServiceException, AltinnConsumerInternalException {
         Receipt receipt = getReceipt();
         when(iReceiptExternalEC.getReceiptECV2(any(), any(), any())).thenReturn(receipt);
         SubmitFormTask sft = createSubmitFormTask();
@@ -68,8 +66,7 @@ class SoapAltinnReceiptConsumerServiceTest {
         doThrow(altinnFaultFaultFaultMessage).when(iReceiptExternalEC).test();
         AltinnReceiptServiceException exception = assertThrows(AltinnReceiptServiceException.class,
                 () -> altinnReceiptConsumerService.test());
-        assertEquals(AltinnConsumerServiceException.FaultCode.ALTINN_FAULT, exception.getFaultCode());
-        assertEquals(ERROR_VALUE, exception.getFaultCodeValue());
+        assertEquals(ERROR_VALUE, exception.getFaultCode());
         assertEquals(ERROR_MESSAGE, exception.getFaultReason());
     }
 
@@ -81,8 +78,7 @@ class SoapAltinnReceiptConsumerServiceTest {
         SubmitFormTask sft = createSubmitFormTask();
         AltinnReceiptServiceException exception = assertThrows(AltinnReceiptServiceException.class,
                 () -> altinnReceiptConsumerService.getReceiptWithSubmitForm(sft));
-        assertEquals(AltinnConsumerServiceException.FaultCode.ALTINN_FAULT, exception.getFaultCode());
-        assertEquals(ERROR_VALUE, exception.getFaultCodeValue());
+        assertEquals(ERROR_VALUE, exception.getFaultCode());
         assertEquals(ERROR_MESSAGE, exception.getFaultReason());
 
     }
@@ -93,11 +89,8 @@ class SoapAltinnReceiptConsumerServiceTest {
         receipt.setReceiptStatus(ReceiptStatusEnum.UN_EXPECTED_ERROR);//TODO hva med REJECTED, VALDIDATION_FAILD mm
         when(iReceiptExternalEC.getReceiptECV2(any(), any(), any())).thenReturn(receipt);
         SubmitFormTask sft = createSubmitFormTask();
-        AltinnReceiptServiceException exception = assertThrows(AltinnReceiptServiceException.class,
+        assertThrows(AltinnConsumerInternalException.class,
                 () -> altinnReceiptConsumerService.getReceiptWithSubmitForm(sft));
-        assertEquals(AltinnConsumerServiceException.FaultCode.INTERNAL_FAULT, exception.getFaultCode());
-        assertEquals(INTERNAL_OR_NO_FAULT, exception.getFaultCodeValue());
-        assertEquals(INTERNAL_FAULT_REASON, exception.getFaultReason());
 
     }
 

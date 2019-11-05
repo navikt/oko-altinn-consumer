@@ -10,7 +10,7 @@ import no.altinn.intermediaryinboundexternalec.ReceiptExternalBE;
 import no.altinn.intermediaryinboundexternalec.ReceiptStatusExternal;
 import no.altinn.intermediaryinboundexternalec.ReferenceExternalBE;
 import no.altinn.intermediaryinboundexternalec.ReferenceTypeExternal;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ class SoapAltinnFormSubmitConsumerServiceTest {
     private SoapAltinnFormSubmitConsumerService soapAltinnFormSubmitConsumerService;
 
     @Test
-    void submitForm() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage, AltinnFormSubmitServiceException {
+    void submitForm() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage, AltinnFormSubmitServiceException, AltinnConsumerInternalException {
         when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(), any(), any())).thenReturn(getReceiptExternalBE());
         SubmitFormTask submitFormTask = soapAltinnFormSubmitConsumerService.submitForm(stubMessage());
 
@@ -75,7 +75,7 @@ class SoapAltinnFormSubmitConsumerServiceTest {
 
     @Test
     void submitFormWithoutAttachment() throws IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage,
-            AltinnFormSubmitServiceException {
+            AltinnFormSubmitServiceException, AltinnConsumerInternalException {
         when(iIntermediaryInboundExternalEC2.submitFormTaskEC(any(), any(), any())).thenReturn(getReceiptExternalBE());
         SubmitFormTask submitFormTask = soapAltinnFormSubmitConsumerService.submitFormWithoutAttachment(stubMessage());
         assertEquals(REFERENCE_VALUE, submitFormTask.getReceiversReference());
@@ -91,8 +91,7 @@ class SoapAltinnFormSubmitConsumerServiceTest {
         doThrow(altinnFaultFaultFaultMessage).when(iIntermediaryInboundExternalEC2).test();
         AltinnFormSubmitServiceException exception = assertThrows(AltinnFormSubmitServiceException.class,
                 () -> soapAltinnFormSubmitConsumerService.test());
-        assertEquals(AltinnConsumerServiceException.FaultCode.ALTINN_FAULT, exception.getFaultCode());
-        assertEquals(ERROR_VALUE, exception.getFaultCodeValue());
+        assertEquals(ERROR_VALUE, exception.getFaultCode());
         assertEquals(ERROR_MESSAGE, exception.getFaultReason());
     }
 
@@ -103,8 +102,7 @@ class SoapAltinnFormSubmitConsumerServiceTest {
                 thenThrow(new IIntermediaryInboundExternalEC2SubmitFormTaskECAltinnFaultFaultFaultMessage(EXCEPTION_MESSAGE, altinnFault));
         AltinnFormSubmitServiceException exception = assertThrows(AltinnFormSubmitServiceException.class,
                 () -> soapAltinnFormSubmitConsumerService.submitForm(stubMessage()));
-        assertEquals(AltinnConsumerServiceException.FaultCode.ALTINN_FAULT, exception.getFaultCode());
-        assertEquals(ERROR_VALUE, exception.getFaultCodeValue());
+        assertEquals(ERROR_VALUE, exception.getFaultCode());
         assertEquals(ERROR_MESSAGE, exception.getFaultReason());
 
     }

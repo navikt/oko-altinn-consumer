@@ -10,7 +10,7 @@ import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2;
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage;
 import no.altinn.correspondenceexternalec.ICorrespondenceExternalEC2TestAltinnFaultFaultFaultMessage;
 import no.altinn.correspondenceexternalec.ObjectFactory;
-import no.nav.okonomi.altinn.consumer.AltinnConsumerServiceException;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.commons.io.IOUtils;
@@ -25,8 +25,6 @@ import javax.xml.bind.JAXBElement;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static no.nav.okonomi.altinn.consumer.correspondenceservice.AltinnCorrespondenceConsumerServiceException.INTERNAL_FAULT_REASON;
-import static no.nav.okonomi.altinn.consumer.correspondenceservice.AltinnCorrespondenceConsumerServiceException.INTERNAL_OR_NO_FAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,7 +56,7 @@ class SoapAltinnCorrespondenceConsumerServiceTest {
     @Test
     void shouldReturnDocument() throws IOException,
             AltinnCorrespondenceConsumerServiceException,
-            ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage {
+            ICorrespondenceExternalEC2GetCorrespondenceForEndUserSystemsECAltinnFaultFaultFaultMessage, AltinnConsumerInternalException {
         CorrespondenceForEndUserSystemV2 correspondenceForEndUserSystemV2 = createCorrespondenceForEndUserSystemV2();
         when(correspondenceService.getCorrespondenceForEndUserSystemsEC(null, null, 4973347, LANGUAGE_ID))
                 .thenReturn(correspondenceForEndUserSystemV2);
@@ -87,8 +85,7 @@ class SoapAltinnCorrespondenceConsumerServiceTest {
                 "4973347");
         AltinnCorrespondenceConsumerServiceException exception = assertThrows(AltinnCorrespondenceConsumerServiceException.class,
                 () -> altinnCorrespondenceConsumerService.retrieveDocument(sft));
-        assertEquals(AltinnConsumerServiceException.FaultCode.ALTINN_FAULT, exception.getFaultCode());
-        assertEquals(ERROR_VALUE, exception.getFaultCodeValue());
+        assertEquals(ERROR_VALUE, exception.getFaultCode());
         assertEquals(ERROR_MESSAGE, exception.getFaultReason());
     }
 
@@ -103,16 +100,10 @@ class SoapAltinnCorrespondenceConsumerServiceTest {
         CorrespondenceForEndUserSystemV2 correspondenceForEndUserSystemV2 = createCorrespondenceForEndUserSystemV2();
         when(correspondenceService.getCorrespondenceForEndUserSystemsEC(null, null, 4973347, LANGUAGE_ID))
                 .thenReturn(correspondenceForEndUserSystemV2);
-
         JAXBElement<byte[]> attachmentBEV2AttachmentData = factory.createAttachmentBEV2AttachmentData(new byte[]{1, 2, 3});
-
         correspondenceForEndUserSystemV2.getCorrespondenceAttachments().getValue().getAttachmentBEV2().get(0).setAttachmentData(attachmentBEV2AttachmentData);
-
-        AltinnCorrespondenceConsumerServiceException exception = assertThrows(AltinnCorrespondenceConsumerServiceException.class,
+        assertThrows(AltinnConsumerInternalException.class,
                 () -> altinnCorrespondenceConsumerService.retrieveDocument(sft));
-        assertEquals(AltinnCorrespondenceConsumerServiceException.FaultCode.INTERNAL_FAULT, exception.getFaultCode());
-        assertEquals(INTERNAL_OR_NO_FAULT, exception.getFaultCodeValue());
-        assertEquals(INTERNAL_FAULT_REASON, exception.getFaultReason());
     }
 
     @Test
@@ -123,8 +114,7 @@ class SoapAltinnCorrespondenceConsumerServiceTest {
         doThrow(altinnFaultFaultFaultMessage).when(correspondenceService).test();
         AltinnCorrespondenceConsumerServiceException exception = assertThrows(AltinnCorrespondenceConsumerServiceException.class,
                 () -> altinnCorrespondenceConsumerService.test());
-        assertEquals(AltinnCorrespondenceConsumerServiceException.FaultCode.ALTINN_FAULT, exception.getFaultCode());
-        assertEquals(ERROR_VALUE, exception.getFaultCodeValue());
+        assertEquals(ERROR_VALUE, exception.getFaultCode());
         assertEquals(ERROR_MESSAGE, exception.getFaultReason());
     }
 

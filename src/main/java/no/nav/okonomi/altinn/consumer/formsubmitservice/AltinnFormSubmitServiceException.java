@@ -6,14 +6,6 @@ public class AltinnFormSubmitServiceException extends AltinnConsumerServiceExcep
 
     private static final long serialVersionUID = -2626248481160079307L;
 
-    public AltinnFormSubmitServiceException(String message) {
-        super(message);
-    }
-
-    public AltinnFormSubmitServiceException(String message, Exception e) {
-        super(message, e);
-    }
-
     public AltinnFormSubmitServiceException(String message, String faultReason, Integer faultCodeValue, Exception e) {
         super(message, faultReason, faultCodeValue, e);
     }

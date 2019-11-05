@@ -6,6 +6,7 @@ import no.altinn.receiptexternalec.IReceiptExternalEC2GetReceiptECV2AltinnFaultF
 import no.altinn.receiptexternalec.IReceiptExternalEC2TestAltinnFaultFaultFaultMessage;
 import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class SoapAltinnReceiptConsumerService implements AltinnReceiptConsumerSe
         this.receiptService = receiptService;
     }
 
-    public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) throws AltinnReceiptServiceException {
+    public synchronized SubmitFormTask getReceiptWithSubmitForm(SubmitFormTask submitFormTask) throws AltinnReceiptServiceException, AltinnConsumerInternalException {
         try {
             ReceiptSearch receiptSearch = receiptService.createReceipt(
                     submitFormTask.getReceiptId(),

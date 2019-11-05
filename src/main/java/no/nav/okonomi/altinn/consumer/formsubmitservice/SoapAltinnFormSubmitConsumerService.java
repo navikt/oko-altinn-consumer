@@ -9,6 +9,7 @@ import no.altinn.intermediaryinboundexternalec.ReceiptExternalBE;
 import no.altinn.intermediaryinboundexternalec.ReceiptStatusExternal;
 import no.altinn.intermediaryinboundexternalec.ReferenceExternalBE;
 import no.altinn.intermediaryinboundexternalec.ReferenceTypeExternal;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.slf4j.Logger;
@@ -45,13 +46,13 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
         this.formTaskShipmentService = formTaskShipmentService;
     }
 
-    public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) throws AltinnFormSubmitServiceException {
+    public synchronized SubmitFormTask submitForm(AltinnMessage altinnMessage) throws AltinnFormSubmitServiceException, AltinnConsumerInternalException {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipment(altinnMessage);
         ReceiptExternalBE receipt = submitFormTaskEC(formTaskShipment);
         return insertReceipt(receipt, altinnMessage.getOrderId());
     }
 
-    public synchronized SubmitFormTask submitFormWithoutAttachment(AltinnMessage altinnMessage) throws AltinnFormSubmitServiceException {
+    public synchronized SubmitFormTask submitFormWithoutAttachment(AltinnMessage altinnMessage) throws AltinnFormSubmitServiceException, AltinnConsumerInternalException {
         FormTaskShipmentBE formTaskShipment = formTaskShipmentService.createFormTaskShipmentWithoutAttachments(altinnMessage);
         ReceiptExternalBE receipt = submitFormTaskEC(formTaskShipment);
         return insertReceipt(receipt, altinnMessage.getOrderId());
@@ -113,7 +114,7 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
         LOGGER.debug("Formtaskshipment til Altinn: {}", xml);
     }
 
-    private SubmitFormTask insertReceipt(ReceiptExternalBE receipt, String externalShipmentReference) throws AltinnFormSubmitServiceException {
+    private SubmitFormTask insertReceipt(ReceiptExternalBE receipt, String externalShipmentReference) throws AltinnConsumerInternalException {
         ReceiptStatusExternal status = receipt.getReceiptStatusCode();
         String recRef = null;
         String archRef = null;
@@ -129,7 +130,7 @@ public class SoapAltinnFormSubmitConsumerService implements AltinnFormSubmitCons
             }
             return new SubmitFormTask(receipt.getReceiptId(), externalShipmentReference, archRef, recRef);
         } else {
-            throw new AltinnFormSubmitServiceException("ReceiptStatus er ikke OK, var " + status + " (" + receipt.getReceiptText() + ")");
+            throw new AltinnConsumerInternalException("ReceiptStatus er ikke OK, var " + status + " (" + receipt.getReceiptText() + ")");
             //TODO burde ikke kaste exception her
         }
     }
