@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: maven package
-        run: mvn clean install
+        run: mvn deploy -Dregistry=https://maven.pkg.github.com/navikt -Dtoken=${{ secrets.GITHUB_TOKEN }}
