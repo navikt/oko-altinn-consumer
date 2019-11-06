@@ -7,12 +7,13 @@ import no.altinn.receiptexternalec.v201506.Receipt;
 import no.altinn.receiptexternalec.v201506.ReceiptSearch;
 import no.altinn.receiptexternalec.v201506.Reference;
 import no.altinn.receiptexternalec.v201506.ReferenceList;
+import no.nav.okonomi.altinn.consumer.AltinnConsumerInternalException;
 import no.nav.okonomi.altinn.consumer.SubmitFormTask;
 import no.nav.okonomi.altinn.consumer.SubmitFormTaskBuilder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ReceiptServiceTest {
 
@@ -37,7 +38,7 @@ public class ReceiptServiceTest {
     }
 
     @Test
-    public void updateReceipt_recepitstatus_OK() {
+    public void updateReceipt_recepitstatus_OK() throws AltinnConsumerInternalException {
         ObjectFactory objectFactory = new ObjectFactory();
         Receipt receipt = objectFactory.createReceipt();
         receipt.setReceiptStatus(ReceiptStatusEnum.OK);
@@ -79,9 +80,10 @@ public class ReceiptServiceTest {
                 .receipdId(RECEIPT_ID)
                 .externalShipmentReference(EXT_SHIPMENT_REF)
                 .build();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        AltinnConsumerInternalException exception = assertThrows(AltinnConsumerInternalException.class, () -> {
             receiptService.updateReceipt(receipt, submitFormTask);
         });
+
     }
 
 }

@@ -9,13 +9,13 @@ import java.util.Properties;
  */
 public class SecurityCredentials {
 
-    private KeyStore keyStore;
+    private final KeyStore keyStore;
 
-    private Properties keyStoreProperties;
+    private final Properties keyStoreProperties;
 
-    private String virksomhetsbruker;
+    private final String virksomhetsbruker;
 
-    private String virksomhetsbrukerPassord;
+    private final String virksomhetsbrukerPassord;
 
     /**
      * Constructor.

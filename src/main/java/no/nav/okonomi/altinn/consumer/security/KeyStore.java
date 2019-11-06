@@ -2,10 +2,10 @@ package no.nav.okonomi.altinn.consumer.security;
 
 public final class KeyStore {
 
-    private String keystorefile;
-    private String keystorealias;
-    private String secret;
-    private String type;
+    private final String keystorefile;
+    private final String keystorealias;
+    private final String secret;
+    private final String type;
 
     public KeyStore(String keystorefile, String keystorealias, String secret, String type) {
         this.keystorefile = keystorefile;
