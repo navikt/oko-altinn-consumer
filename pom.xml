@@ -205,6 +205,13 @@
         </plugins>
     </build>
 
+    <scm>
+        <url>https://github.com/navikt/oko-altinn-consumer.git</url>
+        <connection>scm:git:https://github.com/navikt/oko-altinn-consumer.git</connection>
+        <developerConnection>scm:git:https://github.com/navikt/oko-altinn-consumer.git</developerConnection>
+        <tag>oko-altinn-consumer-1.0.0</tag>
+    </scm>
+
     <distributionManagement>
         <repository>
             <id>m2internal</id>
