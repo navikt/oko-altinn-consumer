@@ -4,7 +4,7 @@
 
     <groupId>no.nav.okonomi</groupId>
     <artifactId>oko-altinn-consumer</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <ciManagement>
@@ -211,7 +211,7 @@
         <url>https://github.com/navikt/oko-altinn-consumer.git</url>
         <connection>scm:git:https://github.com/navikt/oko-altinn-consumer.git</connection>
         <developerConnection>scm:git:https://github.com/navikt/oko-altinn-consumer.git</developerConnection>
-        <tag>oko-altinn-consumer-1.0.7</tag>
+        <tag>oko-altinn-consumer-1.0.6</tag>
     </scm>
 
     <distributionManagement>
