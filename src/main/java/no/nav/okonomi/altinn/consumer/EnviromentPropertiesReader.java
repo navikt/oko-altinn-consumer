@@ -1,6 +1,5 @@
 package no.nav.okonomi.altinn.consumer;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class EnviromentPropertiesReader implements AltinnConsumerProperties {
@@ -81,10 +80,6 @@ public class EnviromentPropertiesReader implements AltinnConsumerProperties {
             throw new AltinnConsumerException("Missing environment variable " + String.join(",", missingProperties));
         };
     }
-
-    private Function<String, String> invalidProperty = x -> {
-        throw new AltinnConsumerException("Missing environment variable " + x);
-    };
 
     private String getEnvVarOrThrow(String key) {
         return getEnvVarOrDefault(key, () -> {
