@@ -39,12 +39,6 @@ public class AltinnConsumerFactory {
 
     private final AltinnConsumerProperties altinnConsumerProperties;
 
-    public AltinnConsumerFactory() {
-        this.altinnConsumerProperties = new EnviromentPropertiesReader();
-        addInterceptors();
-
-    }
-
     public AltinnConsumerFactory(AltinnConsumerProperties altinnConsumerProperties) {
         Objects.requireNonNull(altinnConsumerProperties, "altinnConsumerProperties must not be null");
         this.altinnConsumerProperties = altinnConsumerProperties;
@@ -148,10 +142,6 @@ public class AltinnConsumerFactory {
     @SuppressWarnings("unchecked")
     private void addInterceptors() {
         Bus bus = CXFBusFactory.getDefaultBus();
-        //     LoggingFeature loggingFeature = new LoggingFeature();
-        //     loggingFeature.setPrettyLogging(true);
-        //     loggingFeature.initialize(bus);
-        //     bus.getFeatures().add(loggingFeature);
         bus.getInInterceptors().add(new CookiesInInterceptor());
         bus.getOutInterceptors().add(new CookiesOutInterceptor());
         bus.getOutInterceptors().add(new HeaderInterceptor());
