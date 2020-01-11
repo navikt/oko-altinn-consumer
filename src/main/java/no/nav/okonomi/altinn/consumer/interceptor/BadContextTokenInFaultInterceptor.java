@@ -22,6 +22,7 @@ public class BadContextTokenInFaultInterceptor extends AbstractPhaseInterceptor 
     private static final Logger LOGGER = LoggerFactory.getLogger(BadContextTokenInFaultInterceptor.class);
 
     private static final String ERROR_CODE_BAD_CONTEXT_TOKEN = "BadContextToken";
+    private static final String ERROR_CODE__INVALID_SECURITY = "InvalidSecurity";
 
     @SuppressWarnings("unchecked")
     public BadContextTokenInFaultInterceptor() {
@@ -38,7 +39,7 @@ public class BadContextTokenInFaultInterceptor extends AbstractPhaseInterceptor 
             List<QName> subCodes = soapFault.getSubCodes();
             for (QName subCode : subCodes) {
                 LOGGER.error("Found subCode: {}", subCode.getLocalPart());
-                if (subCode.getLocalPart().equalsIgnoreCase(ERROR_CODE_BAD_CONTEXT_TOKEN)) {
+                if (subCode.getLocalPart().equalsIgnoreCase(ERROR_CODE_BAD_CONTEXT_TOKEN) || subCode.getLocalPart().equalsIgnoreCase(ERROR_CODE__INVALID_SECURITY)) {
                     String tokenId = (String) message.getContextualProperty(SecurityConstants.TOKEN_ID);
                     removeTokenFromMessageAndTokenStore(message, tokenId);
                     CookieStore.setCookie(null);

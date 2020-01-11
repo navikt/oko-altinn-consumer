@@ -1,22 +1,22 @@
 package no.nav.okonomi.altinn.consumer.interceptor;
 
 /**
- * Lagrer en <i>Cookie</i> i trådens minne.
+ * Lagrer en <i>Cookie</i>;
  */
 public class CookieStore {
 
-    private static ThreadLocal<Object> requestCookie = new ThreadLocal<>();
+    private static Object requestCookie;
 
     private CookieStore() {
         throw new AssertionError("Instantiating cookie class");
     }
 
     public static void setCookie(Object cookie) {
-        requestCookie.set(cookie);
+        requestCookie = cookie;
     }
 
     public static Object getCookie() {
-        return requestCookie.get();
+        return requestCookie;
     }
 
 }
