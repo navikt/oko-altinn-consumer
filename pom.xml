@@ -4,7 +4,7 @@
 
     <groupId>no.nav.okonomi</groupId>
     <artifactId>oko-altinn-consumer</artifactId>
-    <version>${revision}${sha1}${changelist}</version>
+    <version>${sha1}${changelist}</version>
     <packaging>jar</packaging>
 
     <properties>
