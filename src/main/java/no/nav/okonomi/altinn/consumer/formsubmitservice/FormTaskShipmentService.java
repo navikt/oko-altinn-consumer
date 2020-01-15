@@ -40,7 +40,8 @@ public class FormTaskShipmentService {
     FormTaskShipmentBE createFormTaskShipmentWithoutAttachments(AltinnMessage message) {
         FormTaskShipmentBE formTaskShipment = objectFactory.createFormTaskShipmentBE();
         formTaskShipment.setReportee(message.getOrgnummer());
-        formTaskShipment.setExternalShipmentReference(message.getOrderId());
+        String externalShipmentRef = props.getExternalShipmentReferencePrefix() + message.getOrderId();
+        formTaskShipment.setExternalShipmentReference(externalShipmentRef);
         formTaskShipment.setFormTasks(createFormTask(message));
 
         return formTaskShipment;
