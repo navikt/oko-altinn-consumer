@@ -46,6 +46,7 @@ class SoapAltinnFormSubmitConsumerServiceTest {
     private static final int ERROR_VALUE = 1;
     private static final String ERROR_MESSAGE = "error";
     private static final String EXCEPTION_MESSAGE = "message";
+    private static final String EXTERNAL_SHIPMENT_REFERENCE_PREFIX = "";
 
     private final ObjectFactory factory = new ObjectFactory();
 
@@ -58,9 +59,10 @@ class SoapAltinnFormSubmitConsumerServiceTest {
 
     @Spy
     private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(
-            new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION));
+            new FormSubmitServiceProperties(SERVICE_CODE, SERVICE_EDITION_CODE, DATA_FORMAT_ID, DATA_FORMAT_VERSION, EXTERNAL_SHIPMENT_REFERENCE_PREFIX));
 
     @InjectMocks
+
     private SoapAltinnFormSubmitConsumerService soapAltinnFormSubmitConsumerService;
 
     @Test

@@ -80,4 +80,9 @@ public class TestPropertiesReader implements AltinnConsumerProperties {
     public String getAppcertKeystoreFilePath() {
         return "AppcertKeystoreFilePath";
     }
+
+    @Override
+    public String getExternalShipmentReferencePrefix() {
+        return "";
+    }
 }

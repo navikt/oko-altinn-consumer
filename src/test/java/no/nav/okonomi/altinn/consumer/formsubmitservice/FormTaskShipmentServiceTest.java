@@ -22,9 +22,10 @@ public class FormTaskShipmentServiceTest {
     private static final String DATA_FORMAT_ID = "dataFormatId";
     private static final String DATA_FORMAT_VERSION = "2";
     private static final String FORM_DATA = "formData";
+    private static final String EXTERNAL_SHIPMENT_REFERENCE_PREFIX = "";
 
 
-    private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(new FormSubmitServiceProperties(SERVICE_CODE,SERVICE_EDITION_CODE,DATA_FORMAT_ID,DATA_FORMAT_VERSION));
+    private FormTaskShipmentService formTaskShipmentService = new FormTaskShipmentService(new FormSubmitServiceProperties(SERVICE_CODE,SERVICE_EDITION_CODE,DATA_FORMAT_ID,DATA_FORMAT_VERSION, EXTERNAL_SHIPMENT_REFERENCE_PREFIX));
 
     @Test
     public void createFormTaskShipment() {

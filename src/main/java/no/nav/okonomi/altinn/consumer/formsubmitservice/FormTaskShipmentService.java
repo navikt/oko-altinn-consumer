@@ -16,18 +16,19 @@ import java.util.Objects;
 public class FormTaskShipmentService {
 
     private final ObjectFactory objectFactory;
-    private final FormSubmitServiceProperties formSubmitServiceProps;
+    private final FormSubmitServiceProperties props;
 
-    public FormTaskShipmentService(FormSubmitServiceProperties formSubmitServiceProps) {
-        Objects.requireNonNull(formSubmitServiceProps, "formSubmitServiceProps must not be null");
-        this.formSubmitServiceProps = formSubmitServiceProps;
+    public FormTaskShipmentService(FormSubmitServiceProperties props) {
+        Objects.requireNonNull(props, "formSubmitServiceProps must not be null");
+        this.props = props;
         objectFactory = new ObjectFactory();
     }
 
     FormTaskShipmentBE createFormTaskShipment(AltinnMessage altinnMessage) {
         FormTaskShipmentBE formTaskShipment = objectFactory.createFormTaskShipmentBE();
         formTaskShipment.setReportee(altinnMessage.getOrgnummer());
-        formTaskShipment.setExternalShipmentReference(altinnMessage.getOrderId());
+        String externalShipmentRef = props.getExternalShipmentReferencePrefix() + altinnMessage.getOrderId();
+        formTaskShipment.setExternalShipmentReference(externalShipmentRef);
         formTaskShipment.setFormTasks(createFormTask(altinnMessage));
         formTaskShipment.setAttachments(createAttachment(altinnMessage.getOrderId(),
                 altinnMessage.getAttachmentData(),
@@ -48,8 +49,8 @@ public class FormTaskShipmentService {
 
     FormTask createFormTask(AltinnMessage altinnMessage) {
         FormTask formTask = objectFactory.createFormTask();
-        formTask.setServiceCode(formSubmitServiceProps.getServiceCode());
-        formTask.setServiceEdition(Integer.valueOf(formSubmitServiceProps.getServiceEditionCode()));
+        formTask.setServiceCode(props.getServiceCode());
+        formTask.setServiceEdition(Integer.valueOf(props.getServiceEditionCode()));
         formTask.setForms(createForms(altinnMessage));
 
         return formTask;
@@ -59,8 +60,8 @@ public class FormTaskShipmentService {
         ArrayOfForm arrayOfForm = objectFactory.createArrayOfForm();
         Form form = objectFactory.createForm();
         form.setCompleted(Boolean.TRUE);
-        form.setDataFormatId(formSubmitServiceProps.getDataFormatId());
-        form.setDataFormatVersion(Integer.valueOf(formSubmitServiceProps.getDataFormatVersion()));
+        form.setDataFormatId(props.getDataFormatId());
+        form.setDataFormatVersion(Integer.valueOf(props.getDataFormatVersion()));
         form.setEndUserSystemReference(altinnMessage.getOrderId());
         form.setParentReference(0);
         form.setFormData(altinnMessage.getFormData());

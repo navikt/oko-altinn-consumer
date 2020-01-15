@@ -122,7 +122,8 @@ public class AltinnConsumerFactory {
                 altinnConsumerProperties.getServiceCode(),
                 altinnConsumerProperties.getServiceEditionCode(),
                 altinnConsumerProperties.getDataFormatId(),
-                altinnConsumerProperties.getDataFormatVersion());
+                altinnConsumerProperties.getDataFormatVersion()
+                ,altinnConsumerProperties.getExternalShipmentReferencePrefix());
     }
 
     private ReceiptService getReceiptService() {
