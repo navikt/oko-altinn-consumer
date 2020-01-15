@@ -34,5 +34,8 @@ public interface AltinnConsumerProperties {
 
     String getAppcertKeystoreFilePath();
 
-    String getExternalShipmentReferencePrefix();
+    default String getExternalShipmentReferencePrefix() {
+        return "";
+    }
+
 }
