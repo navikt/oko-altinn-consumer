@@ -4,8 +4,18 @@
 
     <groupId>no.nav.okonomi</groupId>
     <artifactId>oko-altinn-consumer</artifactId>
-    <version>${sha1}${changelist}</version>
+    <version>1.0.11-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://okonomisystemer.devillo.no:1111</url>
+    </ciManagement>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.adeo.no/browse/</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -199,16 +209,22 @@
 
     <scm>
         <url>https://github.com/navikt/oko-altinn-consumer.git</url>
-        <connection>scm:git:git@github.com:navikt/oko-altinn-consumer.git</connection>
-        <developerConnection>scm:git:git@github.com:navikt/oko-altinn-consumer.git</developerConnection>
+        <connection>scm:git:https://github.com/navikt/oko-altinn-consumer.git</connection>
+        <developerConnection>scm:git:https://github.com/navikt/oko-altinn-consumer.git</developerConnection>
+        <tag>oko-altinn-consumer-1.0.6</tag>
     </scm>
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>Github navikt Maven Packages</name>
-            <url>https://maven.pkg.github.com/navikt/oko-altinn-consumer/</url>
+            <id>m2internal</id>
+            <name>NAV Maven2 Internal Repository</name>
+            <url>dav:http://maven.adeo.no/nexus/content/repositories/m2internal</url>
         </repository>
+        <snapshotRepository>
+            <id>m2snapshot</id>
+            <name>NAV Maven2 Snapshot Repository</name>
+            <url>dav:http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>
