@@ -35,9 +35,7 @@ public class SecurityCredentials {
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.password", keyStore.getSecret());
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.type", keyStore.getType());
         keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.private.password", keyStore.getSecret());
-        if (keyStore.getKeystorealias() != null) {
-            keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.alias", keyStore.getKeystorealias());
-        }
+        keyStoreProperties.setProperty("org.apache.ws.security.crypto.merlin.keystore.alias", keyStore.getKeystorealias());
     }
 
     public KeyStore getKeyStore() {

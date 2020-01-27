@@ -25,7 +25,6 @@ import no.nav.okonomi.altinn.consumer.security.SecurityCredentials;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusFactory;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.WSConstants;
@@ -123,8 +122,8 @@ public class AltinnConsumerFactory {
                 altinnConsumerProperties.getServiceCode(),
                 altinnConsumerProperties.getServiceEditionCode(),
                 altinnConsumerProperties.getDataFormatId(),
-                altinnConsumerProperties.getDataFormatVersion()
-                ,altinnConsumerProperties.getExternalShipmentReferencePrefix());
+                altinnConsumerProperties.getDataFormatVersion(),
+                altinnConsumerProperties.getExternalShipmentReferencePrefix());
     }
 
     private ReceiptService getReceiptService() {
@@ -144,10 +143,6 @@ public class AltinnConsumerFactory {
     @SuppressWarnings("unchecked")
     private void addInterceptors() {
         Bus bus = CXFBusFactory.getDefaultBus();
-        LoggingFeature loggingFeature = new LoggingFeature();
-        loggingFeature.setPrettyLogging(true);
-        loggingFeature.initialize(bus);
-        bus.getFeatures().add(loggingFeature);
         bus.getInInterceptors().add(new CookiesInInterceptor());
         bus.getOutInterceptors().add(new CookiesOutInterceptor());
         bus.getOutInterceptors().add(new HeaderInterceptor());
